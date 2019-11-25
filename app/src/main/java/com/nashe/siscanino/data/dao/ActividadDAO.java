@@ -4,12 +4,13 @@ import androidx.room.Dao;
 import androidx.room.Query;
 
 import com.nashe.siscanino.data.BaseDao;
-import com.nashe.siscanino.data.entity.Alimentacion;
-import com.nashe.siscanino.data.entity.Alimentacion.SCHEMA;
+import com.nashe.siscanino.data.entity.Actividad;
+import com.nashe.siscanino.data.entity.Actividad.SCHEMA;
+
 import java.util.List;
 
 @Dao
-public abstract class AlimentacionDAO implements BaseDao<Alimentacion>, BaseDao.UpdateDAO<Alimentacion>, BaseDao.DeleteDAO<Alimentacion>, BaseDao.OperationsPrimaryKeyDAO {
+public abstract class ActividadDAO implements BaseDao<Actividad>, BaseDao.UpdateDAO<Actividad>, BaseDao.DeleteDAO<Actividad>, BaseDao.OperationsPrimaryKeyDAO {
 
     @Override
     @Query("SELECT COUNT(*)FROM " + SCHEMA.TABLE)
@@ -17,7 +18,7 @@ public abstract class AlimentacionDAO implements BaseDao<Alimentacion>, BaseDao.
 
     @Override
     @Query("SELECT * FROM " + SCHEMA.TABLE)
-    public abstract List<Alimentacion> get() ;
+    public abstract List<Actividad> get() ;
 
     @Override
     @Query("DELETE FROM " + SCHEMA.TABLE)
@@ -25,16 +26,16 @@ public abstract class AlimentacionDAO implements BaseDao<Alimentacion>, BaseDao.
 
     @Override
     @Query("SELECT * FROM " + SCHEMA.TABLE + " WHERE id = :id")
-    public abstract Alimentacion getById(int id) ;
+    public abstract Actividad getById(int id);
 
     @Override
     @Query("SELECT * FROM " + SCHEMA.TABLE + " WHERE id IN(:ids)")
-    public abstract List<Alimentacion> getByIds(long[] ids) ;
+    public  abstract List<Actividad> getByIds(long[] ids);
 
     @Override
     @Query("DELETE FROM " + SCHEMA.TABLE + " WHERE id = :id")
-    public abstract int deleteById(int id) ;
+    public  abstract int deleteById(int id);
 
-    @Query("SELECT * FROM Alimentacion WHERE id = :ejemplo_parametro")
-    public abstract List<Alimentacion> lista(int ejemplo_parametro);
+    @Query("SELECT * FROM Actividad WHERE id = :ejemplo_parametro")
+    public abstract List<Actividad> lista(int ejemplo_parametro);
 }

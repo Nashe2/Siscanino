@@ -27,7 +27,8 @@ public class Vacuna {
         String ID="id";
         String PRODUCTO="producto";
         String DOSIS="dosis";
-        String FECHA="fecha";
+        String CREATED_AT = "created_at";
+        String UPDATED_AT = "updated_at";
         String CARTILLA="cartilla_id";
     }
 
@@ -38,8 +39,10 @@ public class Vacuna {
     private String producto;
     @ColumnInfo(name = DOSIS)
     private String dosis;
-    @ColumnInfo(name = FECHA)
-    private Date fecha;
+    @ColumnInfo(name = CREATED_AT)
+    private Date created;
+    @ColumnInfo(name = UPDATED_AT)
+    private Date updated;
     @ColumnInfo(name = CARTILLA)
     private  int cartillaId;
 
@@ -48,26 +51,32 @@ public class Vacuna {
     }
 
     @Ignore
-    public Vacuna(int id, String producto, String dosis, Date fecha, int cartillaId) {
+    public Vacuna(int id, String producto, String dosis, Date created, Date updated, int cartillaId) {
         this.id = id;
         this.producto = producto;
         this.dosis = dosis;
-        this.fecha = fecha;
-        this.cartillaId = cartillaId;
-    }
-
-    public Vacuna(String producto, String dosis, Date fecha, int cartillaId) {
-        this.producto = producto;
-        this.dosis = dosis;
-        this.fecha = fecha;
+        long time = System.currentTimeMillis();
+        this.created = new Date(time);
+        this.updated = new Date(time);
         this.cartillaId = cartillaId;
     }
 
     @Ignore
-    public Vacuna(String producto, String dosis, Date fecha) {
+    public Vacuna(String producto, String dosis, Date created, Date updated) {
         this.producto = producto;
         this.dosis = dosis;
-        this.fecha = fecha;
+        long time = System.currentTimeMillis();
+        this.created = new Date(time);
+        this.updated = new Date(time);
+    }
+
+    public Vacuna(String producto, String dosis, Date created, Date updated, int cartillaId) {
+        this.producto = producto;
+        this.dosis = dosis;
+        long time = System.currentTimeMillis();
+        this.created = new Date(time);
+        this.updated = new Date(time);
+        this.cartillaId = cartillaId;
     }
 
     public int getId() {
@@ -94,12 +103,20 @@ public class Vacuna {
         this.dosis = dosis;
     }
 
-    public Date getFecha() {
-        return fecha;
+    public Date getCreated() {
+        return created;
     }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public Date getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Date updated) {
+        this.updated = updated;
     }
 
     public int getCartillaId() {
@@ -116,6 +133,6 @@ public class Vacuna {
             return false;
 
         Vacuna casteo= (Vacuna) obj;
-        return  casteo.id == getId() && casteo.producto.equals(getProducto()) && casteo.dosis.equals(getDosis()) && casteo.fecha.equals(getFecha()) && casteo.cartillaId == getCartillaId();
+        return  casteo.id == getId() && casteo.producto.equals(getProducto()) && casteo.dosis.equals(getDosis()) && casteo.created.equals(getCreated()) && casteo.updated.equals(getUpdated()) && casteo.cartillaId == getCartillaId();
     }
 }

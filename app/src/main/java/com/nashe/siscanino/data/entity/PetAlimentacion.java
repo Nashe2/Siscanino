@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
@@ -33,8 +34,6 @@ public class PetAlimentacion {
         String ALIMENTACION = "alimentacion_id";
         String PORCION = "porcion";
         String HORA = "hora";
-        String CREATED_AT = "created_at";
-        String UPDATED_AT = "updated_at";
     }
 
     @ColumnInfo(name = PET)
@@ -45,23 +44,16 @@ public class PetAlimentacion {
     private String porcion;
     @ColumnInfo(name = HORA)
     private String hora;
-    @ColumnInfo(name = CREATED_AT)
-    private Date created;
-    @ColumnInfo(name = UPDATED_AT)
-    private Date updated;
 
     @Ignore
     public PetAlimentacion() {
     }
 
-    public PetAlimentacion(int petId, int alimentacionId, String porcion, String hora, Date created, Date updated) {
+    public PetAlimentacion(int petId, int alimentacionId, String porcion, String hora) {
         this.petId = petId;
         this.alimentacionId = alimentacionId;
         this.porcion = porcion;
         this.hora = hora;
-        long time = System.currentTimeMillis();
-        this.created = new Date(time);
-        this.updated = new Date(time);
     }
 
     public int getPetId() {
@@ -96,21 +88,6 @@ public class PetAlimentacion {
         this.hora = hora;
     }
 
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
-    public Date getUpdated() {
-        return updated;
-    }
-
-    public void setUpdated(Date updated) {
-        this.updated = updated;
-    }
 
     @Override
     public boolean equals(@Nullable Object obj) {
@@ -118,7 +95,7 @@ public class PetAlimentacion {
             return false;
 
         PetAlimentacion casteo = (PetAlimentacion) obj;
-        return casteo.petId == getPetId() && casteo.porcion.equals(getPorcion()) && casteo.hora.equals(getHora()) && casteo.created.equals(getCreated()) && casteo.updated.equals(getUpdated()) && casteo.alimentacionId == getAlimentacionId();
+        return casteo.petId == getPetId() && casteo.porcion.equals(getPorcion()) && casteo.hora.equals(getHora()) && casteo.alimentacionId == getAlimentacionId();
 
     }
 }

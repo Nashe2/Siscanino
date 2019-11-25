@@ -3,6 +3,7 @@ package com.nashe.siscanino.data.entity;
 import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import static com.nashe.siscanino.data.entity.Alimentacion.SCHEMA.*;
@@ -24,10 +25,11 @@ public class Alimentacion {
     @ColumnInfo(name = DESCRIPCION)
     private String descripcion;
 
-
+    @Ignore
     public Alimentacion() {
     }
 
+    @Ignore
     public Alimentacion(int id, String producto, String descripcion) {
         this.id = id;
         this.producto = producto;
