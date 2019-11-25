@@ -36,7 +36,7 @@ public abstract class VacunaDao implements BaseDao<Vacuna>, BaseDao.UpdateDAO<Va
     @Query("DELETE FROM " + SCHEMA.TABLE + " WHERE id = :id")
     public abstract int deleteById(int id);
 
-    @Query("SELECT * FROM vacuna WHERE id = :ejemplo_parametro")
+    @Query("SELECT * FROM Vacuna WHERE id = :ejemplo_parametro")
     public abstract List<Vacuna>  lista(int ejemplo_parametro);
 
 }

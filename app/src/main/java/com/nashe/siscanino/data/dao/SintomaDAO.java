@@ -4,13 +4,13 @@ import androidx.room.Dao;
 import androidx.room.Query;
 
 import com.nashe.siscanino.data.BaseDao;
-import com.nashe.siscanino.data.entity.Desparacitacion;
-import com.nashe.siscanino.data.entity.Desparacitacion.SCHEMA;
+import com.nashe.siscanino.data.entity.Sintoma;
+import com.nashe.siscanino.data.entity.Sintoma.SCHEMA;
 
 import java.util.List;
 
 @Dao
-public abstract class DesparacitacionDao implements BaseDao<Desparacitacion>, BaseDao.UpdateDAO<Desparacitacion>, BaseDao.DeleteDAO<Desparacitacion>, BaseDao.OperationsPrimaryKeyDAO {
+public abstract class SintomaDAO implements BaseDao<Sintoma>, BaseDao.UpdateDAO<Sintoma>, BaseDao.DeleteDAO<Sintoma>, BaseDao.OperationsPrimaryKeyDAO {
 
     @Override
     @Query("SELECT COUNT(*)FROM " + SCHEMA.TABLE)
@@ -18,7 +18,7 @@ public abstract class DesparacitacionDao implements BaseDao<Desparacitacion>, Ba
 
     @Override
     @Query("SELECT * FROM " + SCHEMA.TABLE)
-    public abstract List<Desparacitacion> get();
+    public abstract List<Sintoma> get();
 
     @Override
     @Query("DELETE FROM " + SCHEMA.TABLE)
@@ -26,17 +26,17 @@ public abstract class DesparacitacionDao implements BaseDao<Desparacitacion>, Ba
 
     @Override
     @Query("SELECT * FROM " + SCHEMA.TABLE + " WHERE id = :id")
-    public abstract Desparacitacion getById(int id) ;
+    public abstract Sintoma getById(int id) ;
 
     @Override
     @Query("SELECT * FROM " + SCHEMA.TABLE + " WHERE id IN(:ids)")
-    public abstract List<Desparacitacion> getByIds(long[] ids) ;
+    public abstract List<Sintoma> getByIds(long[] ids) ;
 
     @Override
     @Query("DELETE FROM " + SCHEMA.TABLE + " WHERE id = :id")
     public abstract int deleteById(int id) ;
 
-    @Query("SELECT * FROM Desparacitacion WHERE id = :ejemplo_parametro")
-    public abstract List<Desparacitacion>  lista(int ejemplo_parametro);
+    @Query("SELECT * FROM Sintoma WHERE id = :ejemplo_parametro")
+    public abstract List<Sintoma> lista(int ejemplo_parametro);
 
 }

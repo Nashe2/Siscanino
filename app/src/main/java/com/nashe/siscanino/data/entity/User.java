@@ -73,6 +73,6 @@ public class User {
 
     User casteo=(User)obj;//permite convertir el objeto global a un objeto usuario
         return casteo.id==getId() && casteo.nombre.equals(getNombre()) && casteo.contrasenia.equals(getContrasenia());
-
     }
+
 }

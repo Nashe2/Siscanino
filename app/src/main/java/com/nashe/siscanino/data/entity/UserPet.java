@@ -56,6 +56,13 @@ public class UserPet {
         this.updated = new Date(time);
     }
 
+    @Ignore
+    public UserPet(Date created, Date updated) {
+        long time = System.currentTimeMillis();
+        this.created = new Date(time);
+        this.updated = new Date(time);
+    }
+
     public int getUserId() {
         return userId;
     }
