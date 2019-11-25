@@ -1,12 +1,15 @@
 package com.nashe.siscanino.perfil;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
@@ -20,6 +23,7 @@ import com.nashe.siscanino.data.dao.UsuarioCaninoJoinDao;
 import com.nashe.siscanino.data.entity.Canino;
 import com.nashe.siscanino.data.entity.Raza;
 import com.nashe.siscanino.data.entity.UsuarioCaninoJoin;
+import com.nashe.siscanino.utils.DateOperation;
 import com.nashe.siscanino.utils.ViewHandler;
 
 import java.util.Calendar;
@@ -35,6 +39,8 @@ public class CaninoFormFragment extends BaseFragment {
     // Por parametro
     private static final String ARG_USUARIO = "usuario_id";
     private int paramUsuario;
+    private static final String ARG_CANINO = "canino_id";
+    private int paramCanino;
 
     // Base de datos
     private CaninoDao caninoDAO;
@@ -57,12 +63,14 @@ public class CaninoFormFragment extends BaseFragment {
     private ArrayAdapter arrayAdapter;
     private CustomSpinnerAdapter customSpinnerAdapter;
     private List<Raza> listaRaza;
+    private Canino caninoActualizar;
 
     public CaninoFormFragment() { /* Requiere un constructor vacio */ }
 
-    public static CaninoFormFragment newInstance(int usuario) {
+    public static CaninoFormFragment newInstance(int canino, int usuario) {
         CaninoFormFragment fragment = new CaninoFormFragment();
         Bundle args = new Bundle();
+        args.putInt(ARG_CANINO, canino);
         args.putInt(ARG_USUARIO, usuario);
         fragment.setArguments(args);
         return fragment;
@@ -73,6 +81,7 @@ public class CaninoFormFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             paramUsuario = getArguments().getInt(ARG_USUARIO);
+            paramCanino = getArguments().getInt(ARG_CANINO);
         }
     }
 
@@ -139,6 +148,33 @@ public class CaninoFormFragment extends BaseFragment {
 
         spinnerRaza.setAdapter(customSpinnerAdapter);
 
+        // Si lo envia para editar
+        if (paramCanino != -1) {
+            btnAccion.setText("Actualizar");
+
+            caninoActualizar = caninoDAO.getById(paramCanino);
+            txtNombre.setText(caninoActualizar.getNombre());
+            txtColor.setText(caninoActualizar.getColor());
+            txtPeso.setText(caninoActualizar.getPeso() + "");
+            txtSenias.setText(caninoActualizar.getSenias());
+            btnFecha.setText("Fecha: " + DateOperation.formatted(caninoActualizar.getNacimiento().getTime()));
+            int auxTamanio = 0;
+            for (int index = 0; index < Constantes.TAMANIO_LISTA.length; index++) {
+                if (Constantes.TAMANIO_LISTA[index].equals(caninoActualizar.getTamanio())) {
+                    auxTamanio = index;
+                }
+            }
+            spinnerTamanio.setSelection(auxTamanio);
+            int auxRaza = 0;
+            for (int index = 0; index < listaRaza.size(); index++) {
+                if (listaRaza.get(index).getId() == caninoActualizar.getRazaId()) {
+                    auxRaza = index;
+                }
+            }
+            spinnerRaza.setSelection(auxRaza);
+            spinnerSexo.setSelection(caninoActualizar.getSexo());
+        }
+
         btnAccion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,17 +202,34 @@ public class CaninoFormFragment extends BaseFragment {
 
                 String[] fechaSplit = fecha.split("\\/");
                 Calendar calendario = Calendar.getInstance();
-                calendario.set(Integer.valueOf(fechaSplit[2]), Integer.valueOf(fechaSplit[1]), Integer.valueOf(fechaSplit[0]));
-                Canino caninoNuevo = new Canino(txtNombre.getText().toString(),
-                        new Date(calendario.getTime().getTime()),
-                        txtColor.getText().toString(),
-                        spinnerSexo.getId(),
-                        txtSenias.getText().toString(),
-                        Double.valueOf(txtPeso.getText().toString()),
-                        (String) spinnerTamanio.getSelectedItem(),
-                        (int) spinnerRaza.getSelectedItemId());
-                long canido_id = caninoDAO.insert(caninoNuevo);
-                usuarioCaninoJoinDAO.insert(new UsuarioCaninoJoin(paramUsuario, (int) canido_id));
+                calendario.set(Integer.valueOf(fechaSplit[2]), Integer.valueOf(fechaSplit[1])-1, Integer.valueOf(fechaSplit[0]));
+
+                if (paramCanino != -1) { // Actualizar
+                    caninoActualizar = new Canino(paramCanino,
+                            txtNombre.getText().toString(),
+                            new Date(calendario.getTime().getTime()),
+                            txtColor.getText().toString(),
+                            spinnerSexo.getSelectedItemPosition(),
+                            txtSenias.getText().toString(),
+                            Double.valueOf(txtPeso.getText().toString()),
+                            (String) spinnerTamanio.getSelectedItem(),
+                            (int) spinnerRaza.getSelectedItemId());
+                    long caninoo_id = caninoDAO.update(caninoActualizar);
+                    Timber.i("Canino actualizado: " + caninoo_id);
+                } else { // Agregar
+                    Canino caninoNuevo = new Canino(txtNombre.getText().toString(),
+                            new Date(calendario.getTime().getTime()),
+                            txtColor.getText().toString(),
+                            spinnerSexo.getSelectedItemPosition(),
+                            txtSenias.getText().toString(),
+                            Double.valueOf(txtPeso.getText().toString()),
+                            (String) spinnerTamanio.getSelectedItem(),
+                            (int) spinnerRaza.getSelectedItemId());
+                    long caninoo_id = caninoDAO.insert(caninoNuevo);
+                    usuarioCaninoJoinDAO.insert(new UsuarioCaninoJoin(paramUsuario, (int) caninoo_id));
+                }
+
+                ((PerfilFragment) getFragmentManager().findFragmentByTag(Constantes.PERFIL_FRAGMENT)).actualizarLista();
                 activity.onBackPressed();
             }
         });

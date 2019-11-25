@@ -6,11 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -19,13 +16,13 @@ import com.google.android.material.textview.MaterialTextView;
 import com.nashe.siscanino.BaseFragment;
 import com.nashe.siscanino.Constantes;
 import com.nashe.siscanino.R;
+import com.nashe.siscanino.data.dao.CaninoDao;
 import com.nashe.siscanino.data.dao.UsuarioCaninoJoinDao;
 import com.nashe.siscanino.data.dao.UsuarioDao;
 import com.nashe.siscanino.data.entity.Canino;
 import com.nashe.siscanino.utils.SharedPreferenceHandler;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -38,6 +35,7 @@ public class PerfilFragment extends BaseFragment {
     // Base de datos
     private UsuarioDao usuarioDAO;
     private UsuarioCaninoJoinDao usuarioCaninoJoinDAO;
+    private CaninoDao caninoDao;
 
     // Views
     private ImageView imgConfig;
@@ -52,6 +50,7 @@ public class PerfilFragment extends BaseFragment {
     // Auxiliares
     private AdaptadorCanino adaptador;
     private List<Canino> caninos;
+    private int usuario_id;
 
     public PerfilFragment() { /* Requiere un constructor vacio */ }
 
@@ -73,7 +72,8 @@ public class PerfilFragment extends BaseFragment {
         // Configuracion de la BD
         usuarioDAO = database.usuarioDAO();
         usuarioCaninoJoinDAO = database.usuarioCaninoJoinDAO();
-        final int usuario_id = (int) SharedPreferenceHandler.get(activity.getBaseContext(), Constantes.USUARIO_ID, SharedPreferenceHandler.Type.INT);
+        caninoDao = database.caninoDAO();
+        usuario_id = (int) SharedPreferenceHandler.get(activity.getBaseContext(), Constantes.USUARIO_ID, SharedPreferenceHandler.Type.INT);
         caninos = usuarioCaninoJoinDAO.getRightJoinLeft(usuario_id);
 
         // Configuracion de las views
@@ -82,58 +82,71 @@ public class PerfilFragment extends BaseFragment {
         lblUsuario = view.findViewById(R.id.lblPerfil_usuario);
         lblTipoUsuario = view.findViewById(R.id.lblPerfil_tipousuario);
         imgEditar = view.findViewById(R.id.imgPerfil_editar);
+        btnAgregarCaninoNuevo = view.findViewById(R.id.btnPerfil_agregarCaninoNuevo);
+        btnAgregarCanino = view.findViewById(R.id.btnPerfil_agregarCanino);
+        recyclerViewCaninos = view.findViewById(R.id.recyclerPerfil_canino);
 
-        if (false/*caninos.size() == 0*/) {
-            btnAgregarCaninoNuevo = view.findViewById(R.id.btnPerfil_agregarCaninoNuevo);
+        btnAgregarCaninoNuevo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BaseFragment.cargar(activity.getSupportFragmentManager(),
+                        CaninoFormFragment.newInstance(-1,usuario_id),
+                        Constantes.CANINO_FORMULARIO);
+            }
+        });
+
+        recyclerViewCaninos.setNestedScrollingEnabled(true);
+        recyclerViewCaninos.setLayoutManager(new GridLayoutManager(activity.getBaseContext(), 1));
+        recyclerViewCaninos.setHasFixedSize(true);
+        adaptador = new AdaptadorCanino(activity.getBaseContext(), R.layout.item_canino, new ArrayList<Canino>(caninos));
+        adaptador.setOnItemClickListener(new AdaptadorCanino.OnItemClickListenerAdapter() {
+            @Override
+            public void onItemClickDelete(int position, int id) {
+                Timber.i("Eliminar: position ->" + position + " id -> " + id);
+                adaptador.delete(position);
+                caninoDao.deleteById(id);
+                if (caninos.size() == 0) {
+                    btnAgregarCaninoNuevo.setVisibility(View.VISIBLE);
+                    btnAgregarCanino.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void onItemClickUpdate(int position, int id) {
+                Timber.i("Actualizar: position ->" + position + " id -> " + id);
+                BaseFragment.cargar(activity.getSupportFragmentManager(),
+                        CaninoFormFragment.newInstance(id,usuario_id),
+                        Constantes.CANINO_FORMULARIO);
+            }
+        });
+
+        recyclerViewCaninos.setAdapter(adaptador);
+
+        btnAgregarCanino.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BaseFragment.cargar(activity.getSupportFragmentManager(),
+                        CaninoFormFragment.newInstance(-1,usuario_id),
+                        Constantes.CANINO_FORMULARIO);
+            }
+        });
+
+        if (caninos.size() == 0) {
             btnAgregarCaninoNuevo.setVisibility(View.VISIBLE);
-            btnAgregarCaninoNuevo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    BaseFragment.cargar(activity.getSupportFragmentManager(),
-                            CaninoFormFragment.newInstance(usuario_id),
-                            Constantes.CANINO_FORMULARIO);
-                }
-            });
         } else {
-            Date fecha_test = new Date(System.currentTimeMillis());
-            ArrayList test = new ArrayList<Canino>(3);
-            test.add(new Canino(10, "Test", fecha_test, "test", 1, "test", 10.0, "Grande", 1));
-            test.add(new Canino(20, "Test2", fecha_test, "test2", 1, "test2", 20.0, "Grande2", 1));
-            test.add(new Canino(30, "Test3", fecha_test, "test3", 1, "test3", 30.0, "Grande3", 1));
-
-            recyclerViewCaninos = view.findViewById(R.id.recyclerPerfil_canino);
             recyclerViewCaninos.setVisibility(View.VISIBLE);
-            btnAgregarCanino = view.findViewById(R.id.btnPerfil_agregarCanino);
             btnAgregarCanino.setVisibility(View.VISIBLE);
-
-            recyclerViewCaninos.setLayoutManager(new GridLayoutManager(activity.getBaseContext(), 1));
-            recyclerViewCaninos.setHasFixedSize(true);
-            adaptador = new AdaptadorCanino(activity.getBaseContext(), R.layout.item_canino, test);
-            adaptador.setOnItemClickListener(new AdaptadorCanino.OnItemClickListenerAdapter() {
-                @Override
-                public void onItemClickDelete(int position) {
-                    Timber.i("Eliminar: " + position);
-                    adaptador.delete(position);
-                }
-
-                @Override
-                public void onItemClickUpdate(int position) {
-                    Timber.i("Actualizar: " + position);
-                }
-            });
-
-            recyclerViewCaninos.setAdapter(adaptador);
-
-            btnAgregarCanino.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    BaseFragment.cargar(activity.getSupportFragmentManager(),
-                            CaninoFormFragment.newInstance(usuario_id),
-                            Constantes.CANINO_FORMULARIO);
-                }
-            });
         }
 
         return view;
+    }
+
+    public void actualizarLista() {
+        btnAgregarCaninoNuevo.setVisibility(View.GONE);
+        recyclerViewCaninos.setVisibility(View.VISIBLE);
+        btnAgregarCanino.setVisibility(View.VISIBLE);
+        caninos = usuarioCaninoJoinDAO.getRightJoinLeft(usuario_id);
+        adaptador.setLista(new ArrayList<Canino>(caninos));
+        adaptador.notifyDataSetChanged();
     }
 }

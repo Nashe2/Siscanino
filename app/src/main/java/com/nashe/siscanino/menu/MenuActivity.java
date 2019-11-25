@@ -22,7 +22,6 @@ import com.nashe.siscanino.utils.SharedPreferenceHandler;
 import com.nashe.siscanino.utils.ViewHandler;
 
 import java.util.List;
-import java.util.Objects;
 
 import timber.log.Timber;
 
@@ -125,28 +124,25 @@ public class MenuActivity extends BaseActivity
     @Override
     public void onBackPressed() {
         // super.onBackPressed();
-        //FIXME: Mejorar esta parte
         try {
-            Boolean banderaCaninoFormulario = Objects.requireNonNull(getSupportFragmentManager().findFragmentByTag(Constantes.CANINO_FORMULARIO)).isVisible();
+            Boolean banderaCaninoFormulario = getSupportFragmentManager().findFragmentByTag(Constantes.CANINO_FORMULARIO).isVisible();
 
             if(banderaCaninoFormulario!= null && banderaCaninoFormulario){
                 ViewHandler.mostrarBottomNavigation(this);
-                //FIXME: Borrar despues de terminado el modulo ya que son para test
                 List<Canino> caninos = database.caninoDAO().get();
                 List<UsuarioCaninoJoin> join = database.usuarioCaninoJoinDAO().get();
 
                 for (Canino item: caninos){
-                    Timber.i("Canino-> id: " + item.getNombre() + " nombre: "+item.getNombre());
+                    Timber.d("Canino -> id: " + item.getNombre() + " nombre: "+item.getNombre());
                 }
 
                 for (UsuarioCaninoJoin item: join){
-                    Timber.i("Usuario" +item.getIdUsuario() + " Canino" + item.getIdCacnino());
+                    Timber.d("Usuario:" +item.getIdUsuario() + " - Canino: " + item.getIdCacnino());
                 }
 
                 super.onBackPressed();
                 return;
             }
-
         }catch (NullPointerException e){
             Timber.e(e);
         }

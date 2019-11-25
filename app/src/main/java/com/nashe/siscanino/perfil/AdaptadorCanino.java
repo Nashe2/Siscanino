@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textview.MaterialTextView;
 import com.nashe.siscanino.R;
+import com.nashe.siscanino.data.DatabaseRoom;
+import com.nashe.siscanino.data.dao.RazaDao;
 import com.nashe.siscanino.data.entity.Canino;
 
 import java.util.ArrayList;
@@ -22,11 +24,12 @@ public class AdaptadorCanino extends RecyclerView.Adapter<AdaptadorCanino.ViewHo
     private ArrayList<Canino> lista;
     private OnItemClickListenerAdapter listener;
     private int layout;
+    private RazaDao razaDao;
 
     public interface OnItemClickListenerAdapter {
-        void onItemClickDelete(int position);
+        void onItemClickDelete(int position, int id);
 
-        void onItemClickUpdate(int position);
+        void onItemClickUpdate(int position, int id);
     }
 
     protected void setOnItemClickListener(OnItemClickListenerAdapter listener) {
@@ -37,6 +40,7 @@ public class AdaptadorCanino extends RecyclerView.Adapter<AdaptadorCanino.ViewHo
         this.context = context;
         this.lista = lista;
         this.layout = layout;
+        razaDao = DatabaseRoom.getInstance(context).razaDAO();
     }
 
     @Override
@@ -60,7 +64,9 @@ public class AdaptadorCanino extends RecyclerView.Adapter<AdaptadorCanino.ViewHo
         Canino item = lista.get(position);
         holder.lblId.setText(item.getId() + "");
         holder.lblNombre.setText(item.getNombre());
-        holder.lblOtroDato.setText(String.valueOf(item.getPeso()));
+        StringBuilder raza = new StringBuilder(); // -> Por si hay mas de una raza, ponerlo en un forEach
+        raza.append(razaDao.getById(item.getRazaId()).getNombre());
+        holder.lblOtroDato.setText(raza);
         holder.imgCanino.setImageResource(R.drawable.ic_pets_black_24dp);
         holder.imgEditar.setImageResource(R.drawable.ic_edit_24dp);
         holder.imgEliminar.setImageResource(R.drawable.ic_clear_24dp);
@@ -94,11 +100,11 @@ public class AdaptadorCanino extends RecyclerView.Adapter<AdaptadorCanino.ViewHo
             if (position == RecyclerView.NO_POSITION) return;
 
             if (imgEditar.getId() == view.getId()) {
-                listener.onItemClickUpdate((int) position);
+                listener.onItemClickUpdate((int) position, Integer.parseInt(lblId.getText().toString()));
             }
 
             if (imgEliminar.getId() == view.getId()) {
-                listener.onItemClickDelete((int) position);
+                listener.onItemClickDelete((int) position, Integer.parseInt(lblId.getText().toString()));
             }
         }
     }
@@ -107,5 +113,9 @@ public class AdaptadorCanino extends RecyclerView.Adapter<AdaptadorCanino.ViewHo
         lista.remove(posicion);
         notifyItemRemoved(posicion);
         notifyItemRangeChanged(posicion, lista.size());
+    }
+
+    public void setLista(ArrayList<Canino> lista){
+        this.lista = lista;
     }
 }

@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_end="56dp" />
+            app:layout_constraintGuide_end="50dp" />
 
         <ImageView
             android:id="@+id/imgPerfil_configuracion"
@@ -105,12 +105,12 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerPerfil_canino"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginStart="@dimen/perfil_margenHorizontal_lista"
             android:layout_marginTop="25dp"
             android:layout_marginEnd="@dimen/perfil_margenHorizontal_lista"
             android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@id/btnPerfil_agregarCanino"
+            app:layout_constraintBottom_toTopOf="@id/linea_borde_abajo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imgPerfil_usuario"
@@ -126,8 +126,8 @@
             android:elevation="2dp"
             android:src="@drawable/ic_add_black_24dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@id/linea_borde_abajo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/imgPerfil_usuario"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
