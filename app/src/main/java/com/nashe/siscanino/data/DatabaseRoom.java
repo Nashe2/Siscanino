@@ -13,21 +13,32 @@ import com.nashe.siscanino.data.converter.DateConverter;
 
 
 import com.nashe.siscanino.data.dao.AlimentacionDAO;
-import com.nashe.siscanino.data.dao.CartillaDAO;
-import com.nashe.siscanino.data.dao.DesparacitacionDAO;
-import com.nashe.siscanino.data.dao.PetDAO;
-import com.nashe.siscanino.data.dao.UserDAO;
-import com.nashe.siscanino.data.dao.VacunaDAO;
+import com.nashe.siscanino.data.dao.CaninoDao;
+import com.nashe.siscanino.data.dao.CartillaDao;
+import com.nashe.siscanino.data.dao.DesparacitacionDao;
+import com.nashe.siscanino.data.dao.PetDao;
+import com.nashe.siscanino.data.dao.RazaDao;
+import com.nashe.siscanino.data.dao.TipoUsuarioDao;
+import com.nashe.siscanino.data.dao.UserDao;
+import com.nashe.siscanino.data.dao.UserPetDao;
+import com.nashe.siscanino.data.dao.UsuarioCaninoJoinDao;
+import com.nashe.siscanino.data.dao.UsuarioDao;
+import com.nashe.siscanino.data.dao.VacunaDao;
 import com.nashe.siscanino.data.entity.Alimentacion;
+import com.nashe.siscanino.data.entity.Canino;
 import com.nashe.siscanino.data.entity.Cartilla;
-import com.nashe.siscanino.data.dao.UserPetDAO;
 import com.nashe.siscanino.data.entity.Desparacitacion;
 import com.nashe.siscanino.data.entity.Pet;
 import com.nashe.siscanino.data.entity.PetAlimentacion;
+import com.nashe.siscanino.data.entity.Raza;
+import com.nashe.siscanino.data.entity.TipoUsuario;
 import com.nashe.siscanino.data.entity.User;
 import com.nashe.siscanino.data.entity.UserPet;
+import com.nashe.siscanino.data.entity.Usuario;
+import com.nashe.siscanino.data.entity.UsuarioCaninoJoin;
 import com.nashe.siscanino.data.entity.Vacuna;
 
+@SuppressWarnings("SpellCheckingInspection")
 @Database(entities = {
 
         User.class,
@@ -37,23 +48,44 @@ import com.nashe.siscanino.data.entity.Vacuna;
         Vacuna.class,
         Desparacitacion.class,
         Alimentacion.class,
-        PetAlimentacion.class
-
-        },
+        PetAlimentacion.class,
+        // Nuevas tablas
+        TipoUsuario.class,
+        Usuario.class,
+        UsuarioCaninoJoin.class,
+        Canino.class,
+        Raza.class
+},
         version = 1, exportSchema = false)
 @TypeConverters({DateConverter.class})
 public abstract class DatabaseRoom extends RoomDatabase {
 
-    private static final String NAME = "SimpleDatabase.db";
+    private static final String NAME = "Siscanino.db";
     private static volatile DatabaseRoom INSTANCE;
 
-    public abstract UserDAO userDAO();
-    public abstract PetDAO petDAO();
-    public abstract UserPetDAO userPetDAO();
-    public abstract CartillaDAO cartillaDAO();
-    public abstract VacunaDAO vacunaDAO();
-    public abstract DesparacitacionDAO desparacitacionDAO();
+    public abstract UserDao userDAO();
+
+    public abstract PetDao petDAO();
+
+    public abstract UserPetDao userPetDAO();
+
+    public abstract CartillaDao cartillaDAO();
+
+    public abstract VacunaDao vacunaDAO();
+
+    public abstract DesparacitacionDao desparacitacionDAO();
+
     public abstract AlimentacionDAO alimentacionDAO();
+
+    public abstract TipoUsuarioDao tipoUsuarioDAO();
+
+    public abstract UsuarioDao usuarioDAO();
+
+    public abstract UsuarioCaninoJoinDao usuarioCaninoJoinDAO();
+
+    public abstract CaninoDao caninoDAO();
+
+    public abstract RazaDao razaDAO();
 
     public static DatabaseRoom getInstance(Context context) {
         if (INSTANCE == null) {
@@ -83,7 +115,7 @@ public abstract class DatabaseRoom extends RoomDatabase {
                         super.onDestructiveMigration(db);
                     }
                 })
-                .allowMainThreadQueries() // Uncomment if threads available in MainThread
+                .allowMainThreadQueries() // Comentar si el manejo de la BD estarán en hilos aparte del principal
                 .build();
     }
 

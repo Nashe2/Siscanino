@@ -10,7 +10,7 @@ import com.nashe.siscanino.data.entity.Desparacitacion.SCHEMA;
 import java.util.List;
 
 @Dao
-public abstract class DesparacitacionDAO implements BaseDao<Desparacitacion>, BaseDao.UpdateDAO<Desparacitacion>, BaseDao.DeleteDAO<Desparacitacion>, BaseDao.OperationsPrimaryKeyDAO {
+public abstract class DesparacitacionDao implements BaseDao<Desparacitacion>, BaseDao.UpdateDAO<Desparacitacion>, BaseDao.DeleteDAO<Desparacitacion>, BaseDao.OperationsPrimaryKeyDAO {
 
     @Override
     @Query("SELECT COUNT(*)FROM " + SCHEMA.TABLE)

@@ -1,3 +1,37 @@
 <resources>
     <string name="app_name">Siscanino</string>
+
+    <string name="principal">Principal</string>
+    <string name="perfil">Perfil</string>
+    <string name="canino">Canino</string>
+    <string name="registro">Registro</string>
+
+    <string name="usuario">Usuario</string>
+    <string name="contrasenia">Contraseña</string>
+    <string name="boton_disparador">Disparador</string>
+
+    <string name="registrarse">Registrarse</string>
+    <string name="iniciar_sesion">Iniciar sesión</string>
+
+    <string name="checar_usuario">Ingrese el usuario</string>
+    <string name="checar_contrasenia">"Ingrese la contraseña"</string>
+
+    <string name="corregir_usuario">Usuario no valido</string>
+    <string name="corregir_contrasenia">Contraseña no valido</string>
+
+    <string-array name="sexo_lista">
+        <item>Masculino</item>
+        <item>Femenino</item>
+    </string-array>
+
+    <string-array name="tamanio_lista">
+        <item>Pequeño</item>
+        <item>Mediano</item>
+        <item>Grande</item>
+    </string-array>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="alimentacion">Alimentacion</string>
+    <string name="salud">Salud</string>
+    <string name="actividad">Actividad</string>
 </resources>

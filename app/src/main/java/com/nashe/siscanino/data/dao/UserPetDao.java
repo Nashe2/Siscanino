@@ -12,7 +12,7 @@ import com.nashe.siscanino.data.entity.UserPet.SCHEMA;
 import java.util.List;
 
 @Dao
-public abstract class UserPetDAO implements BaseDao<UserPet> , BaseDao.InnerJoinDAO<User, Pet>{
+public abstract class UserPetDao implements BaseDao<UserPet>, BaseDao.InnerJoinDAO<User, Pet>{
 
     @Override
     @Query("SELECT COUNT(*)FROM " + SCHEMA.TABLE)

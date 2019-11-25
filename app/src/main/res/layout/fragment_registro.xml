@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".autentificacion.RegistroFragment">
+
+    <include
+        layout="@layout/toolbar_personalizado" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/form_margen_usuario"
+        android:layout_marginEnd="@dimen/form_margen_usuario"
+        android:orientation="vertical">
+
+        <include layout="@layout/form_personalizado_usuario" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:layout_marginStart="@dimen/form_margen_usuario"
+        android:layout_marginEnd="@dimen/form_margen_usuario"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/dividerViews_marginTop"
+            android:text="¿Ya tienes cuenta? "
+            android:textColor="@color/material_on_surface_emphasis_high_type" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/lbl_inicio_sesion"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/dividerViews_marginTop"
+            android:text="@string/iniciar_sesion"
+            android:textColor="@color/primary" />
+    </LinearLayout>
+
+</FrameLayout>

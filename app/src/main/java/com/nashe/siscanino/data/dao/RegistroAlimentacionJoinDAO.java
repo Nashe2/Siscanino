@@ -6,5 +6,5 @@ import androidx.room.Query;
 import java.util.List;
 
 @Dao
-public abstract class AlimentacionDAO {
+public abstract class RegistroAlimentacionJoinDAO {
 }

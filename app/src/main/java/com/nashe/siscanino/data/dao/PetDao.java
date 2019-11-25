@@ -4,13 +4,13 @@ import androidx.room.Dao;
 import androidx.room.Query;
 
 import com.nashe.siscanino.data.BaseDao;
-import com.nashe.siscanino.data.entity.Cartilla;
-import com.nashe.siscanino.data.entity.Cartilla.SCHEMA;
+import com.nashe.siscanino.data.entity.Pet;
+import com.nashe.siscanino.data.entity.Pet.SCHEMA;
 
 import java.util.List;
 
 @Dao
-public abstract class CartillaDAO implements BaseDao<Cartilla>, BaseDao.UpdateDAO<Cartilla>, BaseDao.DeleteDAO<Cartilla>, BaseDao.OperationsPrimaryKeyDAO {
+public abstract class PetDao implements BaseDao<Pet>, BaseDao.UpdateDAO<Pet> , BaseDao.DeleteDAO<Pet>, BaseDao.OperationsPrimaryKeyDAO {
 
     @Override
     @Query("SELECT COUNT(*)FROM " + SCHEMA.TABLE)
@@ -18,7 +18,7 @@ public abstract class CartillaDAO implements BaseDao<Cartilla>, BaseDao.UpdateDA
 
     @Override
     @Query("SELECT * FROM " + SCHEMA.TABLE)
-    public abstract List<Cartilla> get() ;
+    public abstract List<Pet> get() ;
 
     @Override
     @Query("DELETE FROM " + SCHEMA.TABLE)
@@ -26,16 +26,16 @@ public abstract class CartillaDAO implements BaseDao<Cartilla>, BaseDao.UpdateDA
 
     @Override
     @Query("SELECT * FROM " + SCHEMA.TABLE + " WHERE id = :id")
-    public abstract Cartilla getById(int id) ;
+    public abstract Pet getById(int id) ;
 
     @Override
     @Query("SELECT * FROM " + SCHEMA.TABLE + " WHERE id IN(:ids)")
-    public abstract List<Cartilla> getByIds(long[] ids) ;
+    public abstract List<Pet> getByIds(long[] ids) ;
 
     @Override
     @Query("DELETE FROM " + SCHEMA.TABLE + " WHERE id = :id")
     public abstract int deleteById(int id);
 
-    @Query("SELECT * FROM Cartilla WHERE id = :ejemplo_parametro")
-    public abstract List<Cartilla>  lista(int ejemplo_parametro);
+    @Query("SELECT * FROM Pet WHERE id = :ejemplo_parametro")
+    public abstract List<Pet>  lista(int ejemplo_parametro);
 }

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".perfil.PerfilFragment">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/linea_borde_arriba"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="@dimen/perfil_primerElemento_marginTop" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/linea_borde_izquierda"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/perfil_margenHorizontal" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/linea_borde_derecha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/perfil_margenHorizontal" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/linea_borde_abajo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="56dp" />
+
+        <ImageView
+            android:id="@+id/imgPerfil_configuracion"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:src="@drawable/ic_settings_black_24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imgPerfil_usuario"
+            android:layout_width="@dimen/perfil_imgUsuario_tamanio"
+            android:layout_height="@dimen/perfil_imgUsuario_tamanio"
+            android:src="@drawable/ic_person_black_24dp"
+            app:layout_constraintStart_toStartOf="@id/linea_borde_izquierda"
+            app:layout_constraintTop_toTopOf="@id/linea_borde_arriba" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/lblPerfil_usuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="12dp"
+            android:text="LuisEnricKe"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            app:layout_constraintStart_toEndOf="@+id/imgPerfil_usuario"
+            app:layout_constraintTop_toTopOf="@+id/imgPerfil_usuario" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/lblPerfil_tipousuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="2dp"
+            android:text="Dueño"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
+            app:layout_constraintStart_toEndOf="@+id/imgPerfil_usuario"
+            app:layout_constraintTop_toBottomOf="@+id/lblPerfil_usuario" />
+
+        <ImageView
+            android:id="@+id/imgPerfil_editar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_edit_24dp"
+            app:layout_constraintEnd_toStartOf="@+id/linea_borde_derecha"
+            app:layout_constraintTop_toTopOf="@+id/lblPerfil_usuario" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/btnPerfil_agregarCaninoNuevo"
+            style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/primary"
+            android:elevation="2dp"
+            android:text="Agregar canino"
+            android:textColor="#F0EFEF"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgPerfil_usuario" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerPerfil_canino"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/perfil_margenHorizontal_lista"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="@dimen/perfil_margenHorizontal_lista"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/btnPerfil_agregarCanino"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgPerfil_usuario"
+            tools:itemCount="7"
+            tools:listitem="@layout/item_canino" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnPerfil_agregarCanino"
+            style="@style/Widget.MaterialComponents.FloatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/primary"
+            android:elevation="2dp"
+            android:src="@drawable/ic_add_black_24dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/linea_borde_abajo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

@@ -1,10 +1,7 @@
 package com.nashe.siscanino.data.dao;
 
 import androidx.room.Dao;
-import androidx.room.Delete;
-import androidx.room.Insert;
 import androidx.room.Query;
-import androidx.room.Update;
 
 import com.nashe.siscanino.data.BaseDao;
 import com.nashe.siscanino.data.entity.User;
@@ -13,7 +10,7 @@ import com.nashe.siscanino.data.entity.User.SCHEMA;
 import java.util.List;
 
 @Dao
-public abstract class UserDAO implements BaseDao<User>, BaseDao.UpdateDAO<User>, BaseDao.DeleteDAO<User>, BaseDao.OperationsPrimaryKeyDAO {
+public abstract class UserDao implements BaseDao<User>, BaseDao.UpdateDAO<User>, BaseDao.DeleteDAO<User>, BaseDao.OperationsPrimaryKeyDAO {
 //
   //  @Insert
     //public abstract void insert(User registro);
