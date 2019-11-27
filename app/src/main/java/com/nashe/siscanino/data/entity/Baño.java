@@ -52,18 +52,18 @@ public class Baño {
         this.caninoId = caninoId;
     }
 
-    public Baño(Date created, Date updated, int caninoId) {
-        long time = System.currentTimeMillis();
-        this.created = new Date(time);
-        this.updated = new Date(time);
-        this.caninoId = caninoId;
-    }
-
     @Ignore
     public Baño(Date created, Date updated) {
         long time = System.currentTimeMillis();
         this.created = new Date(time);
         this.updated = new Date(time);
+    }
+
+    public Baño(Date created, Date updated, int caninoId) {
+        long time = System.currentTimeMillis();
+        this.created = new Date(time);
+        this.updated = new Date(time);
+        this.caninoId = caninoId;
     }
 
     public int getId() {

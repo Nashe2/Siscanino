@@ -5,14 +5,13 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
 import static com.nashe.siscanino.data.entity.CaninoSintoma.SCHEMA.*;
 
 @Entity(tableName = TABLE,
-        primaryKeys = {CANINO,
-                SINTOMA},
         foreignKeys = {
                 @ForeignKey(entity = Canino.class,
                         parentColumns = Canino.SCHEMA.ID,
@@ -25,17 +24,20 @@ import static com.nashe.siscanino.data.entity.CaninoSintoma.SCHEMA.*;
                         onUpdate = ForeignKey.CASCADE,
                         onDelete = ForeignKey.CASCADE)}
 )
-
 public class CaninoSintoma {
     public interface SCHEMA {
         String TABLE = "CaninoSintoma";
+        String ID = "id";
         String CANINO = "canino_id";
         String SINTOMA = "sintoma_id";
         String CREATED_AT = "created_at";
         String UPDATED_AT = "updated_at";
-        String DIAGNOSTICO ="diagnostico";
+        String DIAGNOSTICO = "diagnostico";
     }
 
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = ID)
+    private int id;
     @ColumnInfo(name = CANINO)
     private int caninoId;
     @ColumnInfo(name = SINTOMA)
@@ -52,6 +54,15 @@ public class CaninoSintoma {
     }
 
     @Ignore
+    public CaninoSintoma(int id, int caninoId, int sintomaId, Date created, Date updated, String diagnostico) {
+        this.id = id;
+        this.caninoId = caninoId;
+        this.sintomaId = sintomaId;
+        this.created = created;
+        this.updated = updated;
+        this.diagnostico = diagnostico;
+    }
+
     public CaninoSintoma(int caninoId, int sintomaId, Date created, Date updated, String diagnostico) {
         this.caninoId = caninoId;
         this.sintomaId = sintomaId;
@@ -60,18 +71,12 @@ public class CaninoSintoma {
         this.diagnostico = diagnostico;
     }
 
-    public CaninoSintoma(int sintomaId, Date created, Date updated, String diagnostico) {
-        this.sintomaId = sintomaId;
-        this.created = created;
-        this.updated = updated;
-        this.diagnostico = diagnostico;
+    public int getId() {
+        return id;
     }
 
-    @Ignore
-    public CaninoSintoma(Date created, Date updated, String diagnostico) {
-        this.created = created;
-        this.updated = updated;
-        this.diagnostico = diagnostico;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getCaninoId() {
@@ -118,6 +123,6 @@ public class CaninoSintoma {
     public boolean equals(@Nullable Object obj) {
         if (obj == null || obj.getClass() != CaninoSintoma.class) return false;
         CaninoSintoma casteo = (CaninoSintoma) obj;
-        return casteo.caninoId == getCaninoId() && casteo.created.equals(getCreated()) && casteo.updated.equals(getUpdated()) && casteo.diagnostico.equals(getDiagnostico())&& casteo.sintomaId == getSintomaId();
+        return casteo.caninoId == getCaninoId() && casteo.created.equals(getCreated()) && casteo.updated.equals(getUpdated()) && casteo.diagnostico.equals(getDiagnostico()) && casteo.sintomaId == getSintomaId();
     }
 }

@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
@@ -12,8 +13,6 @@ import static com.nashe.siscanino.data.entity.CaninoActividad.SCHEMA.*;
 
 
 @Entity(tableName = TABLE,
-        primaryKeys = {CANINO,
-                ACTIVIDAD},
         foreignKeys = {
                 @ForeignKey(entity = Canino.class,
                         parentColumns = Canino.SCHEMA.ID,
@@ -29,6 +28,7 @@ import static com.nashe.siscanino.data.entity.CaninoActividad.SCHEMA.*;
 public class CaninoActividad {
     public interface SCHEMA {
         String TABLE = "CaninoActividad";
+        String ID = "ID";
         String CANINO = "canino_id";
         String ACTIVIDAD = "actividad_id";
         String NOMBRE = "nombre";
@@ -37,6 +37,9 @@ public class CaninoActividad {
         String UPDATED_AT = "updated_at";
     }
 
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = ID)
+    private int id;
     @ColumnInfo(name = CANINO)
     private int caninoId;
     @ColumnInfo(name = ACTIVIDAD)
@@ -55,32 +58,31 @@ public class CaninoActividad {
     }
 
     @Ignore
+    public CaninoActividad(int id, int caninoId, int actividadId, String nombre, String hora, Date created, Date updated) {
+        this.id = id;
+        this.caninoId = caninoId;
+        this.actividadId = actividadId;
+        this.nombre = nombre;
+        this.hora = hora;
+        this.created = created;
+        this.updated = updated;
+    }
+
     public CaninoActividad(int caninoId, int actividadId, String nombre, String hora, Date created, Date updated) {
         this.caninoId = caninoId;
         this.actividadId = actividadId;
         this.nombre = nombre;
         this.hora = hora;
-        long time = System.currentTimeMillis();
-        this.created = new Date(time);
-        this.updated = new Date(time);
+        this.created = created;
+        this.updated = updated;
     }
 
-    public CaninoActividad(int actividadId, String nombre, String hora, Date created, Date updated) {
-        this.actividadId = actividadId;
-        this.nombre = nombre;
-        this.hora = hora;
-        long time = System.currentTimeMillis();
-        this.created = new Date(time);
-        this.updated = new Date(time);
+    public int getId() {
+        return id;
     }
 
-    @Ignore
-    public CaninoActividad(String nombre, String hora, Date created, Date updated) {
-        this.nombre = nombre;
-        this.hora = hora;
-        long time = System.currentTimeMillis();
-        this.created = new Date(time);
-        this.updated = new Date(time);
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getCaninoId() {

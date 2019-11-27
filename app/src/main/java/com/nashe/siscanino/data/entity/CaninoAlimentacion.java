@@ -5,12 +5,12 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
+import androidx.room.Index;
+import androidx.room.PrimaryKey;
 
 import static com.nashe.siscanino.data.entity.CaninoAlimentacion.SCHEMA.*;
 
 @Entity(tableName = TABLE,
-        primaryKeys = {CANINO,
-                ALIMENTACION},
         foreignKeys = {
                 @ForeignKey(entity = Canino.class,
                         parentColumns = Canino.SCHEMA.ID,
@@ -26,12 +26,17 @@ import static com.nashe.siscanino.data.entity.CaninoAlimentacion.SCHEMA.*;
 public class CaninoAlimentacion {
     public interface SCHEMA {
         String TABLE = "CaninoAlimentacion";
+        String ID = "id";
         String CANINO = "canino_id";
         String ALIMENTACION = "alimentacion_id";
         String PORCION = "porcion";
         String HORA = "hora";
     }
 
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = ID)
+    private int id;
+    // TODO: Poner Fecha y hora
     @ColumnInfo(name = CANINO)
     private int caninoId;
     @ColumnInfo(name = ALIMENTACION)
@@ -45,11 +50,28 @@ public class CaninoAlimentacion {
     public CaninoAlimentacion() {
     }
 
+    @Ignore
+    public CaninoAlimentacion(int id, int caninoId, int alimentacionId, String porcion, String hora) {
+        this.id =id;
+        this.caninoId = caninoId;
+        this.alimentacionId = alimentacionId;
+        this.porcion = porcion;
+        this.hora = hora;
+    }
+
     public CaninoAlimentacion(int caninoId, int alimentacionId, String porcion, String hora) {
         this.caninoId = caninoId;
         this.alimentacionId = alimentacionId;
         this.porcion = porcion;
         this.hora = hora;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getCaninoId() {
