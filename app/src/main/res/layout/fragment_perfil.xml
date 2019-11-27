@@ -63,10 +63,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="12dp"
-            android:text="LuisEnricKe"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
             app:layout_constraintStart_toEndOf="@+id/imgPerfil_usuario"
-            app:layout_constraintTop_toTopOf="@+id/imgPerfil_usuario" />
+            app:layout_constraintTop_toTopOf="@+id/imgPerfil_usuario"
+            tools:text="LuisEnricKe" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/lblPerfil_tipousuario"
@@ -74,10 +74,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="2dp"
-            android:text="Dueño"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
             app:layout_constraintStart_toEndOf="@+id/imgPerfil_usuario"
-            app:layout_constraintTop_toBottomOf="@+id/lblPerfil_usuario" />
+            app:layout_constraintTop_toBottomOf="@+id/lblPerfil_usuario"
+            tools:text="Dueño" />
 
         <ImageView
             android:id="@+id/imgPerfil_editar"
@@ -126,8 +126,8 @@
             android:elevation="2dp"
             android:src="@drawable/ic_add_black_24dp"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/imgPerfil_usuario"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/imgPerfil_usuario" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

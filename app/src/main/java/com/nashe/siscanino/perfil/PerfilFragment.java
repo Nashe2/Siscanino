@@ -20,6 +20,8 @@ import com.nashe.siscanino.data.dao.CaninoDao;
 import com.nashe.siscanino.data.dao.UsuarioCaninoDao;
 import com.nashe.siscanino.data.dao.UsuarioDao;
 import com.nashe.siscanino.data.entity.Canino;
+import com.nashe.siscanino.data.entity.TipoUsuario;
+import com.nashe.siscanino.data.entity.Usuario;
 import com.nashe.siscanino.utils.SharedPreferenceHandler;
 
 import java.util.ArrayList;
@@ -50,6 +52,8 @@ public class PerfilFragment extends BaseFragment {
     private AdaptadorCanino adaptador;
     private List<Canino> caninos;
     private int usuario_id;
+    private Usuario usuario;
+    private TipoUsuario tipoUsuario;
 
     public PerfilFragment() { /* Requiere un constructor vacio */ }
 
@@ -74,6 +78,8 @@ public class PerfilFragment extends BaseFragment {
         caninoDao = database.caninoDao();
         usuario_id = (int) SharedPreferenceHandler.get(activity.getBaseContext(), Constantes.USUARIO_ID, SharedPreferenceHandler.Type.INT);
         caninos = usuarioCaninoDAO.getRightJoinLeft(usuario_id);
+        usuario = usuarioDAO.getById(usuario_id);
+        tipoUsuario = database.tipoUsuarioDao().getById(usuario.getTipoUsuario());
 
         // Configuracion de las views
         imgConfig = view.findViewById(R.id.imgPerfil_configuracion);
@@ -85,11 +91,23 @@ public class PerfilFragment extends BaseFragment {
         btnAgregarCanino = view.findViewById(R.id.btnPerfil_agregarCanino);
         recyclerViewCaninos = view.findViewById(R.id.recyclerPerfil_canino);
 
+        lblUsuario.setText(usuario.getNombre());
+        lblTipoUsuario.setText(tipoUsuario.getNombre());
+
+        //FIXME: Reparar para que muestre las opcines de configuraciones
+        imgConfig.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferenceHandler.delete(activity.getBaseContext(),Constantes.USUARIO_ID);
+                mListener.cambiarActivity(Constantes.AUTENTIFICACION_ACTIVITY);
+            }
+        });
+
         btnAgregarCaninoNuevo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 BaseFragment.cargar(activity.getSupportFragmentManager(),
-                        CaninoFormFragment.newInstance(-1,usuario_id),
+                        CaninoFormFragment.newInstance(-1, usuario_id),
                         Constantes.CANINO_FORMULARIO);
             }
         });
@@ -114,7 +132,7 @@ public class PerfilFragment extends BaseFragment {
             public void onItemClickUpdate(int position, int id) {
                 Timber.i("Actualizar: position ->" + position + " id -> " + id);
                 BaseFragment.cargar(activity.getSupportFragmentManager(),
-                        CaninoFormFragment.newInstance(id,usuario_id),
+                        CaninoFormFragment.newInstance(id, usuario_id),
                         Constantes.CANINO_FORMULARIO);
             }
         });
@@ -125,7 +143,7 @@ public class PerfilFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 BaseFragment.cargar(activity.getSupportFragmentManager(),
-                        CaninoFormFragment.newInstance(-1,usuario_id),
+                        CaninoFormFragment.newInstance(-1, usuario_id),
                         Constantes.CANINO_FORMULARIO);
             }
         });
