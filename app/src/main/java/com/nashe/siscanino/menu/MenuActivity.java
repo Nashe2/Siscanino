@@ -16,7 +16,7 @@ import com.nashe.siscanino.R;
 import com.nashe.siscanino.autentificacion.AutentificacionActivity;
 import com.nashe.siscanino.data.DatabaseRoom;
 import com.nashe.siscanino.data.entity.Canino;
-import com.nashe.siscanino.data.entity.UsuarioCaninoJoin;
+import com.nashe.siscanino.data.entity.UsuarioCanino;
 import com.nashe.siscanino.perfil.PerfilFragment;
 import com.nashe.siscanino.utils.SharedPreferenceHandler;
 import com.nashe.siscanino.utils.ViewHandler;
@@ -129,14 +129,14 @@ public class MenuActivity extends BaseActivity
 
             if(banderaCaninoFormulario!= null && banderaCaninoFormulario){
                 ViewHandler.mostrarBottomNavigation(this);
-                List<Canino> caninos = database.caninoDAO().get();
-                List<UsuarioCaninoJoin> join = database.usuarioCaninoJoinDAO().get();
+                List<Canino> caninos = database.caninoDao().get();
+                List<UsuarioCanino> join = database.usuarioCaninoDao().get();
 
                 for (Canino item: caninos){
                     Timber.d("Canino -> id: " + item.getNombre() + " nombre: "+item.getNombre());
                 }
 
-                for (UsuarioCaninoJoin item: join){
+                for (UsuarioCanino item: join){
                     Timber.d("Usuario:" +item.getIdUsuario() + " - Canino: " + item.getIdCacnino());
                 }
 

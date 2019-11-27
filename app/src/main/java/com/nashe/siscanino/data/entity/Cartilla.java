@@ -11,14 +11,13 @@ import static com.nashe.siscanino.data.entity.Cartilla.SCHEMA.*;
 
 @Entity(tableName = TABLE,
         foreignKeys = {@ForeignKey(
-                entity = Pet.class,
-                parentColumns = Pet.SCHEMA.ID,
-                childColumns = PET,
+                entity = Canino.class,
+                parentColumns = Canino.SCHEMA.ID,
+                childColumns = CANINO,
                 onUpdate = ForeignKey.CASCADE,
                 onDelete = ForeignKey.CASCADE
         )}
 )
-
 public class Cartilla {
     public interface SCHEMA {
         String TABLE = "Cartilla";
@@ -27,7 +26,7 @@ public class Cartilla {
         String DIRECCION = "direccion";
         String CLINICA = "clinica";
         String PREVIENE = "previene";
-        String PET = "pet_id";
+        String CANINO = "canino_id";
     }
 
     @PrimaryKey(autoGenerate = true)
@@ -41,21 +40,21 @@ public class Cartilla {
     private String clinica;
     @ColumnInfo(name = PREVIENE)
     private String previene;
-    @ColumnInfo(name = PET)
-    private int petId;
+    @ColumnInfo(name = CANINO)
+    private int caninoId;
 
     @Ignore
     public Cartilla() {
     }
 
     @Ignore
-    public Cartilla(int id, String mvz, String direccion, String clinica, String previene, int petId) {
+    public Cartilla(int id, String mvz, String direccion, String clinica, String previene, int caninoId) {
         this.id = id;
         this.mvz = mvz;
         this.direccion = direccion;
         this.clinica = clinica;
         this.previene = previene;
-        this.petId = petId;
+        this.caninoId = caninoId;
     }
 
     @Ignore
@@ -66,12 +65,12 @@ public class Cartilla {
         this.previene = previene;
     }
 
-    public Cartilla(String mvz, String direccion, String clinica, String previene, int petId) {
+    public Cartilla(String mvz, String direccion, String clinica, String previene, int caninoId) {
         this.mvz = mvz;
         this.direccion = direccion;
         this.clinica = clinica;
         this.previene = previene;
-        this.petId = petId;
+        this.caninoId = caninoId;
     }
 
     public int getId() {
@@ -114,20 +113,18 @@ public class Cartilla {
         this.previene = previene;
     }
 
-    public int getPetId() {
-        return petId;
+    public int getCaninoId() {
+        return caninoId;
     }
 
-    public void setPetId(int petId) {
-        this.petId = petId;
+    public void setCaninoId(int caninoId) {
+        this.caninoId = caninoId;
     }
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (obj == null || obj.getClass() != Cartilla.class)
-            return false;
-
+        if (obj == null || obj.getClass() != Cartilla.class) return false;
         Cartilla casteo=(Cartilla)obj;//permite convertir el objeto global a un objeto cartilla
-        return casteo.id==getId() && casteo.mvz.equals(getMvz()) && casteo.direccion.equals(getDireccion()) && casteo.clinica.equals(getClinica()) && casteo.previene.equals(getPreviene()) && casteo.petId == getPetId();
+        return casteo.id==getId() && casteo.mvz.equals(getMvz()) && casteo.direccion.equals(getDireccion()) && casteo.clinica.equals(getClinica()) && casteo.previene.equals(getPreviene()) && casteo.caninoId == getCaninoId();
     }
 }

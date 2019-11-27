@@ -11,24 +11,22 @@ import java.util.Date;
 
 import static com.nashe.siscanino.data.entity.Baño.SCHEMA.*;
 
-
 @Entity(tableName = TABLE,
         foreignKeys = {@ForeignKey(
-                entity = Pet.class,
-                parentColumns = Pet.SCHEMA.ID,
-                childColumns = PET,
+                entity = Canino.class,
+                parentColumns = Canino.SCHEMA.ID,
+                childColumns = CANINO,
                 onUpdate = ForeignKey.CASCADE,
                 onDelete = ForeignKey.CASCADE
         )}
 )
-
 public class Baño {
     public interface SCHEMA {
         String TABLE = "Baño";
         String ID = "id";
         String CREATED_AT = "created_at";
         String UPDATED_AT = "updated_at";
-        String PET = "pet_id";
+        String CANINO = "canino_id";
     }
 
     @PrimaryKey(autoGenerate = true)
@@ -38,27 +36,27 @@ public class Baño {
     private Date created;
     @ColumnInfo(name = UPDATED_AT)
     private Date updated;
-    @ColumnInfo(name = PET)
-    private int petId;
+    @ColumnInfo(name = CANINO)
+    private int caninoId;
 
     @Ignore
     public Baño() {
     }
 
     @Ignore
-    public Baño(int id, Date created, Date updated, int petId) {
+    public Baño(int id, Date created, Date updated, int caninoId) {
         this.id = id;
         long time = System.currentTimeMillis();
         this.created = new Date(time);
         this.updated = new Date(time);
-        this.petId = petId;
+        this.caninoId = caninoId;
     }
 
-    public Baño(Date created, Date updated, int petId) {
+    public Baño(Date created, Date updated, int caninoId) {
         long time = System.currentTimeMillis();
         this.created = new Date(time);
         this.updated = new Date(time);
-        this.petId = petId;
+        this.caninoId = caninoId;
     }
 
     @Ignore
@@ -92,24 +90,18 @@ public class Baño {
         this.updated = updated;
     }
 
-    public int getPetId() {
-        return petId;
+    public int getCaninoId() {
+        return caninoId;
     }
 
-    public void setPetId(int petId) {
-        this.petId = petId;
+    public void setCaninoId(int caninoId) {
+        this.caninoId = caninoId;
     }
 
     @Override
-    public  boolean equals(@Nullable Object obj){
-        if (obj==null || obj.getClass() != Baño.class)
-            return false;
-
-        Baño casteo= (Baño) obj;
-        return  casteo.id == getId() && casteo.created.equals(getCreated()) && casteo.updated.equals(getUpdated()) && casteo.petId == getPetId();
+    public boolean equals(@Nullable Object obj) {
+        if (obj == null || obj.getClass() != Baño.class) return false;
+        Baño casteo = (Baño) obj;
+        return casteo.id == getId() && casteo.created.equals(getCreated()) && casteo.updated.equals(getUpdated()) && casteo.caninoId == getCaninoId();
     }
-
 }
-
-
-

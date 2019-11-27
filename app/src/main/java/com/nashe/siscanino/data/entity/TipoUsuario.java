@@ -72,8 +72,6 @@ public class TipoUsuario {
     public boolean equals(@Nullable Object obj) {
         if (obj == null || obj.getClass() != TipoUsuario.class) return false;
         TipoUsuario cast = (TipoUsuario) obj;
-        return cast.id == getId()
-                && cast.nombre.equals(getNombre())
-                && cast.descripcion.equals(getDescripcion());
+        return cast.id == getId() && cast.nombre.equals(getNombre()) && cast.descripcion.equals(getDescripcion());
     }
 }

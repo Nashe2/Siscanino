@@ -50,7 +50,7 @@ public class InicioSesionFragment extends BaseFragment
         View view = inflater.inflate(R.layout.fragment_inicio_sesion, container, false);
 
         //Configuracion de la BD
-        usuarioDAO = database.usuarioDAO();
+        usuarioDAO = database.usuarioDao();
 
         // Configuracion de los views
         btnDisparador = view.findViewById(R.id.btn_disparador);

@@ -73,7 +73,7 @@ public class AutentificacionActivity extends BaseActivity
     }
 
     private void chequeoTiposUsuario() {
-        TipoUsuarioDao dao = DatabaseRoom.getInstance(this).tipoUsuarioDAO();
+        TipoUsuarioDao dao = DatabaseRoom.getInstance(this).tipoUsuarioDao();
 
         StringBuilder test = new StringBuilder();
         List<TipoUsuario> tipoUsuarios = dao.get();

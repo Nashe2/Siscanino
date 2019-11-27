@@ -19,7 +19,7 @@ public class DateConverter {
     }
 
     @SuppressLint("SimpleDateFormat")
-    public static String toString(Date date){
+    public static String toString(Date date) {
         String pattern = "dd/MM/yyyy HH:mm:ss";
         return new SimpleDateFormat(pattern).format(date);
     }

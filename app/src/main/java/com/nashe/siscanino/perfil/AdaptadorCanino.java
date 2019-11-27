@@ -40,7 +40,7 @@ public class AdaptadorCanino extends RecyclerView.Adapter<AdaptadorCanino.ViewHo
         this.context = context;
         this.lista = lista;
         this.layout = layout;
-        razaDao = DatabaseRoom.getInstance(context).razaDAO();
+        razaDao = DatabaseRoom.getInstance(context).razaDao();
     }
 
     @Override

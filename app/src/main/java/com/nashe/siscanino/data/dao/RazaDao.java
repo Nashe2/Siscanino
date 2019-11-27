@@ -38,7 +38,4 @@ public abstract class RazaDao implements BaseDao<Raza>,
     @Override
     @Query("DELETE FROM " + SCHEMA.TABLE + " WHERE id = :id")
     abstract public int deleteById(int id);
-
-    @Query("SELECT id FROM " + SCHEMA.TABLE + " WHERE nombre = :nombre")
-    abstract public int buscarId(String nombre);
 }

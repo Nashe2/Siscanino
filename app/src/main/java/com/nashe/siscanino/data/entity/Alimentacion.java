@@ -24,7 +24,6 @@ public class Alimentacion {
     @ColumnInfo(name = DESCRIPCION)
     private String descripcion;
 
-
     public Alimentacion() {
     }
 
@@ -65,11 +64,8 @@ public class Alimentacion {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (obj == null || obj.getClass() != Alimentacion.class)
-            return false;
-
+        if (obj == null || obj.getClass() != Alimentacion.class) return false;
         Alimentacion casteo = (Alimentacion) obj;
         return casteo.id == getId() && casteo.producto.equals(getProducto()) && casteo.descripcion.equals(getDescripcion());
-
     }
 }

@@ -1,15 +1,12 @@
 package com.nashe.siscanino.perfil;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-
-import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
@@ -19,10 +16,10 @@ import com.nashe.siscanino.Constantes;
 import com.nashe.siscanino.R;
 import com.nashe.siscanino.data.dao.CaninoDao;
 import com.nashe.siscanino.data.dao.RazaDao;
-import com.nashe.siscanino.data.dao.UsuarioCaninoJoinDao;
+import com.nashe.siscanino.data.dao.UsuarioCaninoDao;
 import com.nashe.siscanino.data.entity.Canino;
 import com.nashe.siscanino.data.entity.Raza;
-import com.nashe.siscanino.data.entity.UsuarioCaninoJoin;
+import com.nashe.siscanino.data.entity.UsuarioCanino;
 import com.nashe.siscanino.utils.DateOperation;
 import com.nashe.siscanino.utils.ViewHandler;
 
@@ -44,7 +41,7 @@ public class CaninoFormFragment extends BaseFragment {
 
     // Base de datos
     private CaninoDao caninoDAO;
-    private UsuarioCaninoJoinDao usuarioCaninoJoinDAO;
+    private UsuarioCaninoDao usuarioCaninoDAO;
     private RazaDao razaDAO;
 
     // Views
@@ -90,9 +87,9 @@ public class CaninoFormFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_canino_form, container, false);
 
         // Configuracion de la BD
-        caninoDAO = database.caninoDAO();
-        usuarioCaninoJoinDAO = database.usuarioCaninoJoinDAO();
-        razaDAO = database.razaDAO();
+        caninoDAO = database.caninoDao();
+        usuarioCaninoDAO = database.usuarioCaninoDao();
+        razaDAO = database.razaDao();
         listaRaza = razaDAO.get();
 
         // Configuracion del menu
@@ -226,7 +223,7 @@ public class CaninoFormFragment extends BaseFragment {
                             (String) spinnerTamanio.getSelectedItem(),
                             (int) spinnerRaza.getSelectedItemId());
                     long caninoo_id = caninoDAO.insert(caninoNuevo);
-                    usuarioCaninoJoinDAO.insert(new UsuarioCaninoJoin(paramUsuario, (int) caninoo_id));
+                    usuarioCaninoDAO.insert(new UsuarioCanino(paramUsuario, (int) caninoo_id));
                 }
 
                 ((PerfilFragment) getFragmentManager().findFragmentByTag(Constantes.PERFIL_FRAGMENT)).actualizarLista();

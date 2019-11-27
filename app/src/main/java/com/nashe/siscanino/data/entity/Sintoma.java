@@ -123,9 +123,7 @@ public class Sintoma {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if(obj==null || obj.getClass() !=Sintoma.class)
-            return false;
-
+        if(obj==null || obj.getClass() !=Sintoma.class) return false;
         Sintoma casteo=(Sintoma)obj;
         return casteo.id==getId() && casteo.nombre.equals(getNombre()) && casteo.fecha.equals(getFecha()) && casteo.hora.equals(getHora()) && casteo.created.equals(getCreated()) && casteo.updated.equals(getUpdated()) && casteo.animo.equals(getAnimo());
     }

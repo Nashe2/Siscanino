@@ -20,16 +20,15 @@ import static com.nashe.siscanino.data.entity.Vacuna.SCHEMA.*;
                 onDelete = ForeignKey.CASCADE
         )}
 )
-
 public class Vacuna {
-    public interface SCHEMA{
-        String TABLE="Vacuna";
-        String ID="id";
-        String PRODUCTO="producto";
-        String DOSIS="dosis";
+    public interface SCHEMA {
+        String TABLE = "Vacuna";
+        String ID = "id";
+        String PRODUCTO = "producto";
+        String DOSIS = "dosis";
         String CREATED_AT = "created_at";
         String UPDATED_AT = "updated_at";
-        String CARTILLA="cartilla_id";
+        String CARTILLA = "cartilla_id";
     }
 
     @PrimaryKey(autoGenerate = true)
@@ -44,7 +43,7 @@ public class Vacuna {
     @ColumnInfo(name = UPDATED_AT)
     private Date updated;
     @ColumnInfo(name = CARTILLA)
-    private  int cartillaId;
+    private int cartillaId;
 
     @Ignore
     public Vacuna() {
@@ -128,11 +127,9 @@ public class Vacuna {
     }
 
     @Override
-    public  boolean equals(@Nullable Object obj){
-        if (obj==null || obj.getClass() != Vacuna.class)
-            return false;
-
-        Vacuna casteo= (Vacuna) obj;
-        return  casteo.id == getId() && casteo.producto.equals(getProducto()) && casteo.dosis.equals(getDosis()) && casteo.created.equals(getCreated()) && casteo.updated.equals(getUpdated()) && casteo.cartillaId == getCartillaId();
+    public boolean equals(@Nullable Object obj) {
+        if (obj == null || obj.getClass() != Vacuna.class) return false;
+        Vacuna casteo = (Vacuna) obj;
+        return casteo.id == getId() && casteo.producto.equals(getProducto()) && casteo.dosis.equals(getDosis()) && casteo.created.equals(getCreated()) && casteo.updated.equals(getUpdated()) && casteo.cartillaId == getCartillaId();
     }
 }

@@ -48,7 +48,7 @@ public class App extends Application {
                 new TipoUsuario("Cuidador", "El usuario tendrá acceso restringido ")
         ));
 
-        baseDatos.tipoUsuarioDAO().inserts(INIT_TIPOUSUARIO);
+        baseDatos.tipoUsuarioDao().inserts(INIT_TIPOUSUARIO);
     }
 
     private void inicioTablaUsuario() {
@@ -57,7 +57,7 @@ public class App extends Application {
                 new Usuario("luis", "luis", 1)
         ));
 
-        baseDatos.usuarioDAO().inserts(INIT_USUARIO);
+        baseDatos.usuarioDao().inserts(INIT_USUARIO);
     }
 
     private void inicioTablaRaza() {
@@ -67,6 +67,6 @@ public class App extends Application {
                 new Raza("Chihuahua", "Es un perro muy chiquito")
         ));
 
-        baseDatos.razaDAO().inserts(INIT_RAZA);
+        baseDatos.razaDao().inserts(INIT_RAZA);
     }
 }

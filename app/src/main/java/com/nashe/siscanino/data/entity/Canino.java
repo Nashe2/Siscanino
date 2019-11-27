@@ -8,20 +8,10 @@ import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
-import static com.nashe.siscanino.data.entity.Canino.SCHEMA.COLOR;
-import static com.nashe.siscanino.data.entity.Canino.SCHEMA.ID;
-import static com.nashe.siscanino.data.entity.Canino.SCHEMA.NACIMIENTO;
-import static com.nashe.siscanino.data.entity.Canino.SCHEMA.NOMBRE;
-import static com.nashe.siscanino.data.entity.Canino.SCHEMA.PESO;
-import static com.nashe.siscanino.data.entity.Canino.SCHEMA.RAZA;
-import static com.nashe.siscanino.data.entity.Canino.SCHEMA.SENIAS;
-import static com.nashe.siscanino.data.entity.Canino.SCHEMA.SEXO;
-import static com.nashe.siscanino.data.entity.Canino.SCHEMA.TABLE;
-import static com.nashe.siscanino.data.entity.Canino.SCHEMA.TAMANIO;
+import static com.nashe.siscanino.data.entity.Canino.SCHEMA.*;
 
 @Entity(tableName = TABLE)
 public class Canino {
-
     public interface SCHEMA {
         String TABLE = "Canino";
         String ID = "id";
@@ -159,14 +149,6 @@ public class Canino {
     public boolean equals(@Nullable Object obj) {
         if (obj == null || obj.getClass() != Canino.class) return false;
         Canino cast = (Canino) obj;
-        return cast.id == getId()
-                && cast.nombre.equals(getNombre())
-                && cast.nacimiento.equals(getNacimiento())
-                && cast.color.equals(getColor())
-                && cast.sexo == getSexo()
-                && cast.senias.equals(getSenias())
-                && cast.peso == getPeso()
-                && cast.tamanio.equals(getTamanio())
-                && cast.razaId == getRazaId();
+        return cast.id == getId() && cast.nombre.equals(getNombre()) && cast.nacimiento.equals(getNacimiento()) && cast.color.equals(getColor()) && cast.sexo == getSexo() && cast.senias.equals(getSenias()) && cast.peso == getPeso() && cast.tamanio.equals(getTamanio()) && cast.razaId == getRazaId();
     }
 }

@@ -5,19 +5,16 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
 
-import java.util.Date;
-
-import static com.nashe.siscanino.data.entity.PetAlimentacion.SCHEMA.*;
+import static com.nashe.siscanino.data.entity.CaninoAlimentacion.SCHEMA.*;
 
 @Entity(tableName = TABLE,
-        primaryKeys = {PET,
+        primaryKeys = {CANINO,
                 ALIMENTACION},
         foreignKeys = {
-                @ForeignKey(entity = Pet.class,
-                        parentColumns = Pet.SCHEMA.ID,
-                        childColumns = PET,
+                @ForeignKey(entity = Canino.class,
+                        parentColumns = Canino.SCHEMA.ID,
+                        childColumns = CANINO,
                         onUpdate = ForeignKey.CASCADE,
                         onDelete = ForeignKey.CASCADE),
                 @ForeignKey(entity = Alimentacion.class,
@@ -26,18 +23,17 @@ import static com.nashe.siscanino.data.entity.PetAlimentacion.SCHEMA.*;
                         onUpdate = ForeignKey.CASCADE,
                         onDelete = ForeignKey.CASCADE)}
 )
-
-public class PetAlimentacion {
+public class CaninoAlimentacion {
     public interface SCHEMA {
-        String TABLE = "PetAlimentacion";
-        String PET = "pet_id";
+        String TABLE = "CaninoAlimentacion";
+        String CANINO = "canino_id";
         String ALIMENTACION = "alimentacion_id";
         String PORCION = "porcion";
         String HORA = "hora";
     }
 
-    @ColumnInfo(name = PET)
-    private int petId;
+    @ColumnInfo(name = CANINO)
+    private int caninoId;
     @ColumnInfo(name = ALIMENTACION)
     private int alimentacionId;
     @ColumnInfo(name = PORCION)
@@ -46,22 +42,22 @@ public class PetAlimentacion {
     private String hora;
 
     @Ignore
-    public PetAlimentacion() {
+    public CaninoAlimentacion() {
     }
 
-    public PetAlimentacion(int petId, int alimentacionId, String porcion, String hora) {
-        this.petId = petId;
+    public CaninoAlimentacion(int caninoId, int alimentacionId, String porcion, String hora) {
+        this.caninoId = caninoId;
         this.alimentacionId = alimentacionId;
         this.porcion = porcion;
         this.hora = hora;
     }
 
-    public int getPetId() {
-        return petId;
+    public int getCaninoId() {
+        return caninoId;
     }
 
-    public void setPetId(int petId) {
-        this.petId = petId;
+    public void setCaninoId(int caninoId) {
+        this.caninoId = caninoId;
     }
 
     public int getAlimentacionId() {
@@ -88,14 +84,10 @@ public class PetAlimentacion {
         this.hora = hora;
     }
 
-
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (obj == null || obj.getClass() != PetAlimentacion.class)
-            return false;
-
-        PetAlimentacion casteo = (PetAlimentacion) obj;
-        return casteo.petId == getPetId() && casteo.porcion.equals(getPorcion()) && casteo.hora.equals(getHora()) && casteo.alimentacionId == getAlimentacionId();
-
+        if (obj == null || obj.getClass() != CaninoAlimentacion.class) return false;
+        CaninoAlimentacion casteo = (CaninoAlimentacion) obj;
+        return casteo.caninoId == getCaninoId() && casteo.porcion.equals(getPorcion()) && casteo.hora.equals(getHora()) && casteo.alimentacionId == getAlimentacionId();
     }
 }

@@ -96,9 +96,6 @@ public class Usuario {
     public boolean equals(@Nullable Object obj) {
         if (obj == null || obj.getClass() != Usuario.class) return false;
         Usuario cast = (Usuario) obj;
-        return cast.id == getId()
-                && cast.nombre.equals(getNombre())
-                && cast.contrasenia.equals(getContrasenia())
-                && cast.tipoUsuario == getTipoUsuario();
+        return cast.id == getId() && cast.nombre.equals(getNombre()) && cast.contrasenia.equals(getContrasenia()) && cast.tipoUsuario == getTipoUsuario();
     }
 }

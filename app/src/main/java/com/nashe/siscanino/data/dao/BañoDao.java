@@ -10,11 +10,14 @@ import com.nashe.siscanino.data.entity.Baño.SCHEMA;
 import java.util.List;
 
 @Dao
-public abstract class BañoDAO implements BaseDao<Baño>, BaseDao.UpdateDAO<Baño>, BaseDao.DeleteDAO<Baño>, BaseDao.OperationsPrimaryKeyDAO {
+public abstract class BañoDao implements BaseDao<Baño>,
+        BaseDao.UpdateDAO<Baño>,
+        BaseDao.DeleteDAO<Baño>,
+        BaseDao.OperationsPrimaryKeyDAO {
 
     @Override
     @Query("SELECT COUNT(*)FROM " + SCHEMA.TABLE)
-    public abstract int count() ;
+    public abstract int count();
 
     @Override
     @Query("SELECT * FROM " + SCHEMA.TABLE)
@@ -22,21 +25,17 @@ public abstract class BañoDAO implements BaseDao<Baño>, BaseDao.UpdateDAO<Bañ
 
     @Override
     @Query("DELETE FROM " + SCHEMA.TABLE)
-    public abstract void drop() ;
+    public abstract void drop();
 
     @Override
     @Query("SELECT * FROM " + SCHEMA.TABLE + " WHERE id = :id")
-    public abstract Baño getById(int id) ;
+    public abstract Baño getById(int id);
 
     @Override
     @Query("SELECT * FROM " + SCHEMA.TABLE + " WHERE id IN(:ids)")
-    public abstract List<Baño> getByIds(long[] ids) ;
+    public abstract List<Baño> getByIds(long[] ids);
 
     @Override
     @Query("DELETE FROM " + SCHEMA.TABLE + " WHERE id = :id")
-    public abstract int deleteById(int id) ;
-
-    @Query("SELECT * FROM Baño WHERE id = :ejemplo_parametro")
-    public abstract List<Baño>  lista(int ejemplo_parametro);
-
+    public abstract int deleteById(int id);
 }

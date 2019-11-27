@@ -13,14 +13,13 @@ import static com.nashe.siscanino.data.entity.Medicamento.SCHEMA.*;
 
 @Entity(tableName = TABLE,
         foreignKeys = {@ForeignKey(
-                entity = Pet.class,
-                parentColumns = Pet.SCHEMA.ID,
-                childColumns = PET,
+                entity = Canino.class,
+                parentColumns = Canino.SCHEMA.ID,
+                childColumns = CANINO,
                 onUpdate = ForeignKey.CASCADE,
                 onDelete = ForeignKey.CASCADE
         )}
 )
-
 public class Medicamento {
     public interface SCHEMA {
         String TABLE = "Medicamento";
@@ -30,7 +29,7 @@ public class Medicamento {
         String DOSIS = "dosis";
         String CREATED_AT = "created_at";
         String UPDATED_AT = "updated_at";
-        String PET = "pet_id";
+        String CANINO = "canino_id";
     }
 
     @PrimaryKey(autoGenerate = true)
@@ -46,15 +45,15 @@ public class Medicamento {
     private Date created;
     @ColumnInfo(name = UPDATED_AT)
     private Date updated;
-    @ColumnInfo(name = PET)
-    private int petId;
+    @ColumnInfo(name = CANINO)
+    private int caninoId;
 
     @Ignore
     public Medicamento() {
     }
 
     @Ignore
-    public Medicamento(int id, String medicamento, String descripcion, String dosis, Date created, Date updated, int petId) {
+    public Medicamento(int id, String medicamento, String descripcion, String dosis, Date created, Date updated, int caninoId) {
         this.id = id;
         this.medicamento = medicamento;
         this.descripcion = descripcion;
@@ -62,17 +61,17 @@ public class Medicamento {
         long time = System.currentTimeMillis();
         this.created = new Date(time);
         this.updated = new Date(time);
-        this.petId = petId;
+        this.caninoId = caninoId;
     }
 
-    public Medicamento(String medicamento, String descripcion, String dosis, Date created, Date updated, int petId) {
+    public Medicamento(String medicamento, String descripcion, String dosis, Date created, Date updated, int caninoId) {
         this.medicamento = medicamento;
         this.descripcion = descripcion;
         this.dosis = dosis;
         long time = System.currentTimeMillis();
         this.created = new Date(time);
         this.updated = new Date(time);
-        this.petId = petId;
+        this.caninoId = caninoId;
     }
 
     @Ignore
@@ -133,22 +132,18 @@ public class Medicamento {
         this.updated = updated;
     }
 
-    public int getPetId() {
-        return petId;
+    public int getCaninoId() {
+        return caninoId;
     }
 
-    public void setPetId(int petId) {
-        this.petId = petId;
+    public void setCaninoId(int caninoId) {
+        this.caninoId = caninoId;
     }
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (obj == null || obj.getClass() != Medicamento.class)
-            return false;
-
+        if (obj == null || obj.getClass() != Medicamento.class) return false;
         Medicamento casteo = (Medicamento) obj;
-        return casteo.id == getId() && casteo.medicamento.equals(getMedicamento()) && casteo.descripcion.equals(getDescripcion()) && casteo.dosis.equals(getDosis()) && casteo.created.equals(getCreated()) && casteo.updated.equals(getUpdated()) && casteo.petId == getPetId();
+        return casteo.id == getId() && casteo.medicamento.equals(getMedicamento()) && casteo.descripcion.equals(getDescripcion()) && casteo.dosis.equals(getDosis()) && casteo.created.equals(getCreated()) && casteo.updated.equals(getUpdated()) && casteo.caninoId == getCaninoId();
     }
-
 }
-

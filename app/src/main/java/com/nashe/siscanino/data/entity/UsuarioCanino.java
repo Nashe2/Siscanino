@@ -7,22 +7,22 @@ import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 
 
-@Entity(tableName = UsuarioCaninoJoin.SCHEMA.TABLE,
-        primaryKeys = {UsuarioCaninoJoin.SCHEMA.USUARIO,
-                UsuarioCaninoJoin.SCHEMA.CANINO},
+@Entity(tableName = UsuarioCanino.SCHEMA.TABLE,
+        primaryKeys = {UsuarioCanino.SCHEMA.USUARIO,
+                UsuarioCanino.SCHEMA.CANINO},
         foreignKeys = {
                 @ForeignKey(entity = Usuario.class,
                         parentColumns = Usuario.SCHEMA.ID,
-                        childColumns = UsuarioCaninoJoin.SCHEMA.USUARIO,
+                        childColumns = UsuarioCanino.SCHEMA.USUARIO,
                         onUpdate = ForeignKey.CASCADE,
                         onDelete = ForeignKey.CASCADE),
                 @ForeignKey(entity = Canino.class,
                         parentColumns = Canino.SCHEMA.ID,
-                        childColumns = UsuarioCaninoJoin.SCHEMA.CANINO,
+                        childColumns = UsuarioCanino.SCHEMA.CANINO,
                         onUpdate = ForeignKey.CASCADE,
                         onDelete = ForeignKey.CASCADE)}
 )
-public class UsuarioCaninoJoin {
+public class UsuarioCanino {
     public interface SCHEMA {
         String TABLE = "UsuarioCanino";
         String USUARIO = "usuario_id";
@@ -35,10 +35,10 @@ public class UsuarioCaninoJoin {
     private int idCacnino;
 
     @Ignore
-    public UsuarioCaninoJoin() {
+    public UsuarioCanino() {
     }
 
-    public UsuarioCaninoJoin(int idUsuario, int idCacnino) {
+    public UsuarioCanino(int idUsuario, int idCacnino) {
         this.idUsuario = idUsuario;
         this.idCacnino = idCacnino;
     }
@@ -61,9 +61,8 @@ public class UsuarioCaninoJoin {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (obj == null || obj.getClass() != UsuarioCaninoJoin.class) return false;
-        UsuarioCaninoJoin cast = (UsuarioCaninoJoin) obj;
-        return cast.idUsuario == getIdUsuario()
-                && cast.idCacnino == getIdCacnino();
+        if (obj == null || obj.getClass() != UsuarioCanino.class) return false;
+        UsuarioCanino cast = (UsuarioCanino) obj;
+        return cast.idUsuario == getIdUsuario() && cast.idCacnino == getIdCacnino();
     }
 }

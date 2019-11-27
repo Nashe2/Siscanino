@@ -20,7 +20,6 @@ import static com.nashe.siscanino.data.entity.Desparacitacion.SCHEMA.*;
                 onDelete = ForeignKey.CASCADE
         )}
 )
-
 public class Desparacitacion {
     public interface SCHEMA {
         String TABLE = "Desparacitacion";
@@ -132,9 +131,7 @@ public class Desparacitacion {
 
     @Override
     public  boolean equals(@Nullable Object obj){
-        if (obj==null || obj.getClass() != Desparacitacion.class)
-            return false;
-
+        if (obj==null || obj.getClass() != Desparacitacion.class) return false;
         Desparacitacion casteo= (Desparacitacion) obj;
         return  casteo.id == getId() && casteo.producto.equals(getProducto()) && casteo.dosis.equals(getDosis()) && casteo.created.equals(getCreated()) && casteo.updated.equals(getUpdated()) && casteo.cartillaId == getCartillaId();
     }

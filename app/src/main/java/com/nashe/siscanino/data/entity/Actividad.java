@@ -81,9 +81,7 @@ public class Actividad {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (obj == null || obj.getClass() != Actividad.class)
-            return false;
-
+        if (obj == null || obj.getClass() != Actividad.class) return false;
         Actividad casteo = (Actividad) obj;
         return casteo.id == getId() && casteo.tipo.equals(getTipo()) && casteo.tiempo.equals(getTiempo()) && casteo.descripcion.equals(getDescripcion());
     }

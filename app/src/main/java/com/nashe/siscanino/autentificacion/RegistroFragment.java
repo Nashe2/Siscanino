@@ -55,7 +55,7 @@ public class RegistroFragment extends BaseFragment implements View.OnFocusChange
         View view = inflater.inflate(R.layout.fragment_registro, container, false);
 
         // Configuracion de la BD
-        usuarioDAO = database.usuarioDAO();
+        usuarioDAO = database.usuarioDao();
 
         // Configuracion del menu
         toolbar = ViewHandler.configToolbarBotonAtras(activity, view);

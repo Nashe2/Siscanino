@@ -13,7 +13,6 @@ import static com.nashe.siscanino.data.entity.Raza.SCHEMA.TABLE;
 
 @Entity(tableName = TABLE)
 public class Raza {
-
     public interface SCHEMA {
         String TABLE = "Raza";
         String ID = "id";
@@ -74,8 +73,6 @@ public class Raza {
     public boolean equals(@Nullable Object obj) {
         if (obj == null || obj.getClass() != Raza.class) return false;
         Raza cast = (Raza) obj;
-        return cast.id == getId()
-                && cast.nombre.equals(getNombre())
-                && cast.caracteristica.equals(getCaracteristica());
+        return cast.id == getId() && cast.nombre.equals(getNombre()) && cast.caracteristica.equals(getCaracteristica());
     }
 }

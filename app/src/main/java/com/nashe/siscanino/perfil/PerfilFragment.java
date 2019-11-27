@@ -17,13 +17,12 @@ import com.nashe.siscanino.BaseFragment;
 import com.nashe.siscanino.Constantes;
 import com.nashe.siscanino.R;
 import com.nashe.siscanino.data.dao.CaninoDao;
-import com.nashe.siscanino.data.dao.UsuarioCaninoJoinDao;
+import com.nashe.siscanino.data.dao.UsuarioCaninoDao;
 import com.nashe.siscanino.data.dao.UsuarioDao;
 import com.nashe.siscanino.data.entity.Canino;
 import com.nashe.siscanino.utils.SharedPreferenceHandler;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import timber.log.Timber;
@@ -34,7 +33,7 @@ public class PerfilFragment extends BaseFragment {
 
     // Base de datos
     private UsuarioDao usuarioDAO;
-    private UsuarioCaninoJoinDao usuarioCaninoJoinDAO;
+    private UsuarioCaninoDao usuarioCaninoDAO;
     private CaninoDao caninoDao;
 
     // Views
@@ -70,11 +69,11 @@ public class PerfilFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_perfil, container, false);
 
         // Configuracion de la BD
-        usuarioDAO = database.usuarioDAO();
-        usuarioCaninoJoinDAO = database.usuarioCaninoJoinDAO();
-        caninoDao = database.caninoDAO();
+        usuarioDAO = database.usuarioDao();
+        usuarioCaninoDAO = database.usuarioCaninoDao();
+        caninoDao = database.caninoDao();
         usuario_id = (int) SharedPreferenceHandler.get(activity.getBaseContext(), Constantes.USUARIO_ID, SharedPreferenceHandler.Type.INT);
-        caninos = usuarioCaninoJoinDAO.getRightJoinLeft(usuario_id);
+        caninos = usuarioCaninoDAO.getRightJoinLeft(usuario_id);
 
         // Configuracion de las views
         imgConfig = view.findViewById(R.id.imgPerfil_configuracion);
@@ -145,7 +144,7 @@ public class PerfilFragment extends BaseFragment {
         btnAgregarCaninoNuevo.setVisibility(View.GONE);
         recyclerViewCaninos.setVisibility(View.VISIBLE);
         btnAgregarCanino.setVisibility(View.VISIBLE);
-        caninos = usuarioCaninoJoinDAO.getRightJoinLeft(usuario_id);
+        caninos = usuarioCaninoDAO.getRightJoinLeft(usuario_id);
         adaptador.setLista(new ArrayList<Canino>(caninos));
         adaptador.notifyDataSetChanged();
     }
