@@ -5,6 +5,7 @@ public class Constantes {
     // Shared Preferences
     public static final String PRIMERA_EJECUCION = "Primera ejecucion";
     public static final String USUARIO_ID = "user_id";
+    public static final String CANINO_ID = "canino_id";
 
     // Activities
     public static final String AUTENTIFICACION_ACTIVITY = "Autentificacion";

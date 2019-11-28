@@ -5,8 +5,9 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
-import androidx.room.Index;
 import androidx.room.PrimaryKey;
+
+import java.util.Date;
 
 import static com.nashe.siscanino.data.entity.CaninoAlimentacion.SCHEMA.*;
 
@@ -30,40 +31,39 @@ public class CaninoAlimentacion {
         String CANINO = "canino_id";
         String ALIMENTACION = "alimentacion_id";
         String PORCION = "porcion";
-        String HORA = "hora";
+        String FECHA_HORA = "fechaHora";
     }
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = ID)
     private int id;
-    // TODO: Poner Fecha y hora
     @ColumnInfo(name = CANINO)
     private int caninoId;
     @ColumnInfo(name = ALIMENTACION)
     private int alimentacionId;
     @ColumnInfo(name = PORCION)
     private String porcion;
-    @ColumnInfo(name = HORA)
-    private String hora;
+    @ColumnInfo(name = FECHA_HORA)
+    private Date fechaHora;
 
     @Ignore
     public CaninoAlimentacion() {
     }
 
     @Ignore
-    public CaninoAlimentacion(int id, int caninoId, int alimentacionId, String porcion, String hora) {
+    public CaninoAlimentacion(int id, int caninoId, int alimentacionId, String porcion, Date fechaHora) {
         this.id =id;
         this.caninoId = caninoId;
         this.alimentacionId = alimentacionId;
         this.porcion = porcion;
-        this.hora = hora;
+        this.fechaHora = fechaHora;
     }
 
-    public CaninoAlimentacion(int caninoId, int alimentacionId, String porcion, String hora) {
+    public CaninoAlimentacion(int caninoId, int alimentacionId, String porcion, Date fechaHora) {
         this.caninoId = caninoId;
         this.alimentacionId = alimentacionId;
         this.porcion = porcion;
-        this.hora = hora;
+        this.fechaHora = fechaHora;
     }
 
     public int getId() {
@@ -98,18 +98,18 @@ public class CaninoAlimentacion {
         this.porcion = porcion;
     }
 
-    public String getHora() {
-        return hora;
+    public Date getFechaHora() {
+        return fechaHora;
     }
 
-    public void setHora(String hora) {
-        this.hora = hora;
+    public void setFechaHora(Date fechaHora) {
+        this.fechaHora = fechaHora;
     }
 
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj == null || obj.getClass() != CaninoAlimentacion.class) return false;
         CaninoAlimentacion casteo = (CaninoAlimentacion) obj;
-        return casteo.caninoId == getCaninoId() && casteo.porcion.equals(getPorcion()) && casteo.hora.equals(getHora()) && casteo.alimentacionId == getAlimentacionId();
+        return casteo.caninoId == getCaninoId() && casteo.porcion.equals(getPorcion()) && casteo.fechaHora.equals(getFechaHora()) && casteo.alimentacionId == getAlimentacionId();
     }
 }

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -98,7 +99,7 @@ public class PerfilFragment extends BaseFragment {
         imgConfig.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferenceHandler.delete(activity.getBaseContext(),Constantes.USUARIO_ID);
+                SharedPreferenceHandler.delete(activity.getBaseContext(), Constantes.USUARIO_ID);
                 mListener.cambiarActivity(Constantes.AUTENTIFICACION_ACTIVITY);
             }
         });
@@ -120,7 +121,7 @@ public class PerfilFragment extends BaseFragment {
             @Override
             public void onItemClickDelete(int position, int id) {
                 Timber.i("Eliminar: position ->" + position + " id -> " + id);
-                adaptador.delete(position);
+                adaptador.delete(position, id);
                 caninoDao.deleteById(id);
                 if (caninos.size() == 0) {
                     btnAgregarCaninoNuevo.setVisibility(View.VISIBLE);
@@ -134,6 +135,16 @@ public class PerfilFragment extends BaseFragment {
                 BaseFragment.cargar(activity.getSupportFragmentManager(),
                         CaninoFormFragment.newInstance(id, usuario_id),
                         Constantes.CANINO_FORMULARIO);
+            }
+        });
+
+        adaptador.setOnItemLongClickListener(new AdaptadorCanino.OnItemLongClickListenerAdapter() {
+            @Override
+            public void onItemLongClick(int position, int id) {
+                Timber.i("LongClick: " + id);
+                SharedPreferenceHandler.set(activity.getBaseContext(), Constantes.CANINO_ID, id);
+                Toast.makeText(activity.getBaseContext(), "Se selecciono el canino con ID " + id, Toast.LENGTH_LONG).show();
+                recyclerViewCaninos.setAdapter(adaptador);
             }
         });
 

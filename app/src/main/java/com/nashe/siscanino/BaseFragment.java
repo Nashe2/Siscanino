@@ -1,6 +1,7 @@
 package com.nashe.siscanino;
 
 import android.annotation.SuppressLint;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.nashe.siscanino.data.DatabaseRoom;
 import com.nashe.siscanino.utils.DatePickerFragment;
+import com.nashe.siscanino.utils.TimePickerFragment;
 
 import java.util.List;
 
@@ -90,6 +92,12 @@ public abstract class BaseFragment extends Fragment {
         FragmentManager manager = activity.getSupportFragmentManager();
         DialogFragment dialogFragment = new DatePickerFragment(view, prefix);
         dialogFragment.show(manager, DatePickerFragment.TAG);
+    }
+
+    protected void mostrarTimePickerDialog(AppCompatActivity activity, View view, String prefix) {
+        FragmentManager manager = activity.getSupportFragmentManager();
+        DialogFragment dialogFragment = new TimePickerFragment(view, prefix);
+        dialogFragment.show(manager, TimePickerFragment.TAG);
     }
 
 }

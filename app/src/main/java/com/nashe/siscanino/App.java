@@ -138,9 +138,9 @@ public class App extends Application {
         ));
         baseDatos.alimentacionDao().inserts(INIT);
         baseDatos.caninoAlimentacionDao().inserts(
-                new CaninoAlimentacion(1, 1, "250 mg", "10:00"),
-                new CaninoAlimentacion(1, 1, "250 mg", "16:00"),
-                new CaninoAlimentacion(1, 2, "2 c/u", "21:00")
+                new CaninoAlimentacion(1, 1, "250 mg", new Date(timestamp)),
+                new CaninoAlimentacion(1, 1, "250 mg", new Date(timestamp)),
+                new CaninoAlimentacion(1, 2, "2 c/u", new Date(timestamp))
         );
     }
 

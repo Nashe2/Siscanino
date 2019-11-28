@@ -13,6 +13,7 @@ import com.nashe.siscanino.BaseActivity;
 import com.nashe.siscanino.BaseFragment;
 import com.nashe.siscanino.Constantes;
 import com.nashe.siscanino.R;
+import com.nashe.siscanino.alimentacion.AlimentacionFragment;
 import com.nashe.siscanino.autentificacion.AutentificacionActivity;
 import com.nashe.siscanino.data.DatabaseRoom;
 import com.nashe.siscanino.data.entity.Canino;
@@ -96,7 +97,7 @@ public class MenuActivity extends BaseActivity
                 break;
             case Constantes.ALIMENTACION_FRAGMENT:
                 Timber.i("Alimentacion");
-                //BaseFragment.cargar(this.getSupportFragmentManager(), RegistroFragment.newInstance(), Constantes.ALIMENTACION_FRAGMENT);
+                BaseFragment.cargar(this.getSupportFragmentManager(), AlimentacionFragment.newInstance(), Constantes.ALIMENTACION_FRAGMENT);
                 break;
             case Constantes.PERFIL_FRAGMENT:
                 Timber.i("Perfil");
