@@ -155,7 +155,7 @@ public class CaninoFormFragment extends BaseFragment {
             txtColor.setText(caninoActualizar.getColor());
             txtPeso.setText(caninoActualizar.getPeso() + "");
             txtSenias.setText(caninoActualizar.getSenias());
-            btnFecha.setText("Fecha: " + DateOperation.formatted(caninoActualizar.getNacimiento().getTime()));
+            btnFecha.setText("Fecha: " + DateOperation.formatDate(caninoActualizar.getNacimiento().getTime()));
             int auxTamanio = 0;
             for (int index = 0; index < Constantes.TAMANIO_LISTA.length; index++) {
                 if (Constantes.TAMANIO_LISTA[index].equals(caninoActualizar.getTamanio())) {

@@ -10,7 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.button.MaterialButton;
+import com.nashe.siscanino.BaseFragment;
 import com.nashe.siscanino.R;
+import com.nashe.siscanino.data.dao.AlimentacionDao;
+import com.nashe.siscanino.data.dao.CaninoAlimentacionDao;
+import com.nashe.siscanino.data.dao.CaninoDao;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,7 +25,15 @@ import com.nashe.siscanino.R;
  * Use the {@link AlimentosFormFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AlimentosFormFragment extends Fragment {
+public class AlimentosFormFragment extends BaseFragment {
+
+    // Base de datos
+    private CaninoDao caninoDao;
+    private CaninoAlimentacionDao caninoAlimentacionDao;
+    private AlimentacionDao alimentacionDao;
+
+    // Views
+    private MaterialButton btnTiempo;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -66,8 +79,17 @@ public class AlimentosFormFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_alimentos_form, container, false);
+        View view = inflater.inflate(R.layout.fragment_alimentos_form, container, false);
+        btnTiempo = view.findViewById(R.id.btnCanino_fecha);
+
+        btnTiempo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mostrarTimePickerDialog(activity, btnTiempo, "Tiempo: ");
+            }
+        });
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

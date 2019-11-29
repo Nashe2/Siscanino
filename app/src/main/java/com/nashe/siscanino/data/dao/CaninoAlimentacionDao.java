@@ -12,7 +12,8 @@ import com.nashe.siscanino.data.entity.CaninoAlimentacion.SCHEMA;
 import java.util.List;
 
 @Dao
-public abstract class CaninoAlimentacionDao implements BaseDao<CaninoAlimentacion>,
+public abstract class CaninoAlimentacionDao
+        implements BaseDao<CaninoAlimentacion>,
         BaseDao.InnerJoinDAO<Canino, Alimentacion> {
 
     @Override
@@ -40,4 +41,10 @@ public abstract class CaninoAlimentacionDao implements BaseDao<CaninoAlimentacio
             "ON alimentacion.id = " + SCHEMA.TABLE + ".alimentacion_id " +
             "WHERE " + SCHEMA.TABLE + ".alimentacion_id = :idLeft")
     public abstract List<Alimentacion> getRightJoinLeft(int idLeft);
+
+    @Query("SELECT * FROM CaninoAlimentacion WHERE canino_id = :left")
+    public abstract List<CaninoAlimentacion> getLeft(int left);
+
+    @Query("SELECT * FROM CaninoAlimentacion WHERE alimentacion_id = :right")
+    public abstract List<CaninoAlimentacion> getRight(int right);
 }

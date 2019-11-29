@@ -59,6 +59,15 @@ public abstract class BaseFragment extends Fragment {
         void cambiarActivity(String activity);
     }
 
+    protected boolean eliminar(FragmentManager manager, String tag) {
+        Fragment fragment = manager.findFragmentByTag(tag);
+        FragmentTransaction fragmentTransaction = manager.beginTransaction();
+        if (fragment == null) return false;
+        fragmentTransaction.remove(fragment);
+        fragmentTransaction.commit();
+        return true;
+    }
+
     public static void cargar(FragmentManager manager, Fragment fragment, String tag) {
         List<Fragment> fragments = manager.getFragments();
         FragmentTransaction transaccion = manager.beginTransaction()

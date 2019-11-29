@@ -10,9 +10,21 @@ import java.util.Date;
 @SuppressWarnings({"unused","WeakerAccess"})
 public class DateOperation {
 
-    public static String formatted(long date){
+    public static String formatDate(long date){
         Date aux = new Date(date);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return sdf.format(aux);
+    }
+
+    public static String formatTime(long date){
+        Date aux = new Date(date);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        return sdf.format(aux);
+    }
+
+    public static String formatDateTime(long date){
+        Date aux = new Date(date);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         return sdf.format(aux);
     }
 

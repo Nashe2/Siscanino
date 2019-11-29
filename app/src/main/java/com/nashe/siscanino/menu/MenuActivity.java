@@ -33,7 +33,7 @@ public class MenuActivity extends BaseActivity
 
     private DatabaseRoom database;
 
-    private BottomNavigationView bottomNav;
+    protected BottomNavigationView bottomNav;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +51,10 @@ public class MenuActivity extends BaseActivity
         bottomNav = findViewById(R.id.navegacion);
         bottomNav.setOnNavigationItemSelectedListener(this);
         bottomNav.setSelectedItemId(R.id.nav_principal);
+    }
+
+     public void selectBottomNAvigationItem(int itemId) {
+        bottomNav.setSelectedItemId(itemId);
     }
 
     @Override

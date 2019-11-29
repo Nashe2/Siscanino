@@ -11,12 +11,13 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textview.MaterialTextView;
-import com.nashe.siscanino.App;
 import com.nashe.siscanino.Constantes;
 import com.nashe.siscanino.R;
 import com.nashe.siscanino.data.DatabaseRoom;
 import com.nashe.siscanino.data.dao.RazaDao;
 import com.nashe.siscanino.data.entity.Canino;
+import com.nashe.siscanino.utils.OnItemClickListenerAdapter;
+import com.nashe.siscanino.utils.OnItemLongClickListenerAdapter;
 import com.nashe.siscanino.utils.SharedPreferenceHandler;
 import com.nashe.siscanino.utils.SharedPreferencesPersonalizados;
 
@@ -32,15 +33,6 @@ public class AdaptadorCanino extends RecyclerView.Adapter<AdaptadorCanino.ViewHo
     private int layout;
     private RazaDao razaDao;
 
-    public interface OnItemClickListenerAdapter {
-        void onItemClickDelete(int position, int id);
-
-        void onItemClickUpdate(int position, int id);
-    }
-
-    public interface OnItemLongClickListenerAdapter {
-        void onItemLongClick(int position, int id);
-    }
 
     protected void setOnItemClickListener(OnItemClickListenerAdapter listener) {
         this.clickListener = listener;
@@ -84,7 +76,7 @@ public class AdaptadorCanino extends RecyclerView.Adapter<AdaptadorCanino.ViewHo
         StringBuilder raza = new StringBuilder(); // -> Por si hay mas de una raza, ponerlo en un forEach
         raza.append(razaDao.getById(item.getRazaId()).getNombre());
         holder.lblOtroDato.setText(raza);
-        holder.imgCanino.setImageResource(R.drawable.ic_pets_black_24dp);
+        holder.imgIcono.setImageResource(R.drawable.ic_pets_black_24dp);
         holder.imgEditar.setImageResource(R.drawable.ic_edit_24dp);
         holder.imgEliminar.setImageResource(R.drawable.ic_clear_24dp);
     }
@@ -95,7 +87,7 @@ public class AdaptadorCanino extends RecyclerView.Adapter<AdaptadorCanino.ViewHo
         public MaterialTextView lblId;
         public MaterialTextView lblNombre;
         public MaterialTextView lblOtroDato;
-        public ImageView imgCanino;
+        public ImageView imgIcono;
         public ImageView imgEditar;
         public ImageView imgEliminar;
 
@@ -103,7 +95,7 @@ public class AdaptadorCanino extends RecyclerView.Adapter<AdaptadorCanino.ViewHo
             super(v);
             card = v.findViewById(R.id.card);
             lblId = v.findViewById(R.id.lbl_id);
-            imgCanino = v.findViewById(R.id.img_icono);
+            imgIcono = v.findViewById(R.id.img_icono);
             lblNombre = v.findViewById(R.id.lbl_titulo);
             lblOtroDato = v.findViewById(R.id.lbl_subTitulo);
             imgEditar = v.findViewById(R.id.img_editar);
