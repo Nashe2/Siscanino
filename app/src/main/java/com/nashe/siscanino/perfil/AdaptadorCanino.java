@@ -11,12 +11,14 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textview.MaterialTextView;
+import com.nashe.siscanino.App;
 import com.nashe.siscanino.Constantes;
 import com.nashe.siscanino.R;
 import com.nashe.siscanino.data.DatabaseRoom;
 import com.nashe.siscanino.data.dao.RazaDao;
 import com.nashe.siscanino.data.entity.Canino;
 import com.nashe.siscanino.utils.SharedPreferenceHandler;
+import com.nashe.siscanino.utils.SharedPreferencesPersonalizados;
 
 import java.util.ArrayList;
 
@@ -74,8 +76,8 @@ public class AdaptadorCanino extends RecyclerView.Adapter<AdaptadorCanino.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Canino item = lista.get(position);
-        Integer canino = (Integer) SharedPreferenceHandler.get(context, Constantes.CANINO_ID, SharedPreferenceHandler.Type.INT);
-        if (canino != null && canino == item.getId())
+        int caninoSeleccionado = SharedPreferencesPersonalizados.obtenerCaninoSeleccionado(context);
+        if (caninoSeleccionado != -1 && caninoSeleccionado == item.getId())
             holder.card.setBackgroundResource(R.color.purple_gradient);
         holder.lblId.setText(item.getId() + "");
         holder.lblNombre.setText(item.getNombre());
@@ -137,8 +139,9 @@ public class AdaptadorCanino extends RecyclerView.Adapter<AdaptadorCanino.ViewHo
     }
 
     public void delete(int posicion, int id) {
-        Integer canino = (Integer) SharedPreferenceHandler.get(context, Constantes.CANINO_ID, SharedPreferenceHandler.Type.INT);
-        if (canino != null && canino == id) SharedPreferenceHandler.delete(context, Constantes.CANINO_ID);
+        int canino = SharedPreferencesPersonalizados.obtenerCaninoSeleccionado(context);
+        if (canino != -1 && canino == id)
+            SharedPreferenceHandler.delete(context, Constantes.CANINO_ID);
         lista.remove(posicion);
         notifyItemRemoved(posicion);
         notifyItemRangeChanged(posicion, lista.size());

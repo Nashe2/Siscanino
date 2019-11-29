@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textview.MaterialTextView;
+import com.nashe.siscanino.App;
 import com.nashe.siscanino.BaseFragment;
 import com.nashe.siscanino.Constantes;
 import com.nashe.siscanino.R;
@@ -24,6 +25,7 @@ import com.nashe.siscanino.data.entity.Canino;
 import com.nashe.siscanino.data.entity.TipoUsuario;
 import com.nashe.siscanino.data.entity.Usuario;
 import com.nashe.siscanino.utils.SharedPreferenceHandler;
+import com.nashe.siscanino.utils.SharedPreferencesPersonalizados;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +79,7 @@ public class PerfilFragment extends BaseFragment {
         usuarioDAO = database.usuarioDao();
         usuarioCaninoDAO = database.usuarioCaninoDao();
         caninoDao = database.caninoDao();
-        usuario_id = (int) SharedPreferenceHandler.get(activity.getBaseContext(), Constantes.USUARIO_ID, SharedPreferenceHandler.Type.INT);
+        usuario_id = SharedPreferencesPersonalizados.obtenerUsuarioActivo(activity.getBaseContext());
         caninos = usuarioCaninoDAO.getRightJoinLeft(usuario_id);
         usuario = usuarioDAO.getById(usuario_id);
         tipoUsuario = database.tipoUsuarioDao().getById(usuario.getTipoUsuario());
@@ -120,7 +122,7 @@ public class PerfilFragment extends BaseFragment {
         adaptador.setOnItemClickListener(new AdaptadorCanino.OnItemClickListenerAdapter() {
             @Override
             public void onItemClickDelete(int position, int id) {
-                Timber.i("Eliminar: position ->" + position + " id -> " + id);
+                Timber.d("Eliminar: position: " + position + " id: " + id);
                 adaptador.delete(position, id);
                 caninoDao.deleteById(id);
                 if (caninos.size() == 0) {
@@ -131,7 +133,7 @@ public class PerfilFragment extends BaseFragment {
 
             @Override
             public void onItemClickUpdate(int position, int id) {
-                Timber.i("Actualizar: position ->" + position + " id -> " + id);
+                Timber.d("Actualizar -> position: " + position + " id: " + id);
                 BaseFragment.cargar(activity.getSupportFragmentManager(),
                         CaninoFormFragment.newInstance(id, usuario_id),
                         Constantes.CANINO_FORMULARIO);
@@ -141,9 +143,9 @@ public class PerfilFragment extends BaseFragment {
         adaptador.setOnItemLongClickListener(new AdaptadorCanino.OnItemLongClickListenerAdapter() {
             @Override
             public void onItemLongClick(int position, int id) {
-                Timber.i("LongClick: " + id);
+                Timber.d("Seleccionado -> position: " + position + " id: " + id);
                 SharedPreferenceHandler.set(activity.getBaseContext(), Constantes.CANINO_ID, id);
-                Toast.makeText(activity.getBaseContext(), "Se selecciono el canino con ID " + id, Toast.LENGTH_LONG).show();
+                Toast.makeText(activity.getBaseContext(), "Canino seleccionado: " + id, Toast.LENGTH_SHORT).show();
                 recyclerViewCaninos.setAdapter(adaptador);
             }
         });

@@ -19,7 +19,7 @@ import com.nashe.siscanino.data.DatabaseRoom;
 import com.nashe.siscanino.data.entity.Canino;
 import com.nashe.siscanino.data.entity.UsuarioCanino;
 import com.nashe.siscanino.perfil.PerfilFragment;
-import com.nashe.siscanino.utils.SharedPreferenceHandler;
+import com.nashe.siscanino.utils.SharedPreferencesPersonalizados;
 import com.nashe.siscanino.utils.ViewHandler;
 
 import java.util.List;
@@ -44,7 +44,7 @@ public class MenuActivity extends BaseActivity
 
         configBottomNavigation();
 
-        chequeoUsuario();
+        Timber.d("Usuario ID: " + SharedPreferencesPersonalizados.obtenerUsuarioActivo(this));
     }
 
     private void configBottomNavigation() {
@@ -128,23 +128,23 @@ public class MenuActivity extends BaseActivity
         try {
             Boolean banderaCaninoFormulario = getSupportFragmentManager().findFragmentByTag(Constantes.CANINO_FORMULARIO).isVisible();
 
-            if(banderaCaninoFormulario!= null && banderaCaninoFormulario){
+            if (banderaCaninoFormulario != null && banderaCaninoFormulario) {
                 ViewHandler.mostrarBottomNavigation(this);
                 List<Canino> caninos = database.caninoDao().get();
                 List<UsuarioCanino> join = database.usuarioCaninoDao().get();
 
-                for (Canino item: caninos){
-                    Timber.d("Canino -> id: " + item.getNombre() + " nombre: "+item.getNombre());
+                for (Canino item : caninos) {
+                    Timber.d("Canino -> id: " + item.getNombre() + " nombre: " + item.getNombre());
                 }
 
-                for (UsuarioCanino item: join){
-                    Timber.d("Usuario:" +item.getIdUsuario() + " - Canino: " + item.getIdCacnino());
+                for (UsuarioCanino item : join) {
+                    Timber.d("Usuario:" + item.getIdUsuario() + " - Canino: " + item.getIdCacnino());
                 }
 
                 super.onBackPressed();
                 return;
             }
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             Timber.e(e);
         }
 
@@ -157,11 +157,5 @@ public class MenuActivity extends BaseActivity
         } else {
             finish();
         }
-    }
-
-    private void chequeoUsuario() {
-        //SharedPreferenceHandler.delete(this, Constantes.USUARIO_ID);
-        int valor = (int) SharedPreferenceHandler.get(this, Constantes.USUARIO_ID, SharedPreferenceHandler.Type.INT);
-        Timber.d("ID Usuario:" + valor);
     }
 }

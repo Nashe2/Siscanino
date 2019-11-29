@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -36,7 +37,7 @@ public class RegistroFragment extends BaseFragment implements View.OnFocusChange
     private TextInputLayout inLayoutContrasenia;
     private TextInputEditText txtContrasenia;
     private MaterialTextView lblIniciarSesion;
-    private Toolbar toolbar;
+    private MaterialToolbar toolbar;
 
     public RegistroFragment() { /* Requiere un constructor vacio */ }
 

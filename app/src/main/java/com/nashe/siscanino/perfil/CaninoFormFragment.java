@@ -20,6 +20,7 @@ import com.nashe.siscanino.data.dao.UsuarioCaninoDao;
 import com.nashe.siscanino.data.entity.Canino;
 import com.nashe.siscanino.data.entity.Raza;
 import com.nashe.siscanino.data.entity.UsuarioCanino;
+import com.nashe.siscanino.utils.CustomSpinnerAdapter;
 import com.nashe.siscanino.utils.DateOperation;
 import com.nashe.siscanino.utils.ViewHandler;
 
@@ -195,7 +196,7 @@ public class CaninoFormFragment extends BaseFragment {
                         + "\nSexo: " + spinnerSexo.getSelectedItem()
                         + "\nTamaño: " + spinnerTamanio.getSelectedItem();
 
-                Timber.i(resultado);
+                Timber.d(resultado);
 
                 String[] fechaSplit = fecha.split("\\/");
                 Calendar calendario = Calendar.getInstance();

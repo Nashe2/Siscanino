@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.nashe.siscanino.App;
 import com.nashe.siscanino.BaseActivity;
 import com.nashe.siscanino.BaseFragment;
 import com.nashe.siscanino.Constantes;
@@ -13,6 +14,7 @@ import com.nashe.siscanino.data.dao.TipoUsuarioDao;
 import com.nashe.siscanino.data.entity.TipoUsuario;
 import com.nashe.siscanino.menu.MenuActivity;
 import com.nashe.siscanino.utils.SharedPreferenceHandler;
+import com.nashe.siscanino.utils.SharedPreferencesPersonalizados;
 
 import java.util.List;
 
@@ -28,8 +30,8 @@ public class AutentificacionActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_autentificacion);
 
-        checarSiExisteUsuario();
-        cambiarFragment(Constantes.INICIO_SESION_FRAGMENT);
+        if (SharedPreferencesPersonalizados.obtenerUsuarioActivo(this) != -1) cambiarActivity(Constantes.MENU_ACTIVITY);
+        else cambiarFragment(Constantes.INICIO_SESION_FRAGMENT);
     }
 
     @Override
@@ -64,22 +66,5 @@ public class AutentificacionActivity extends BaseActivity
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 1) finish();
         super.onBackPressed();
-    }
-
-    private void checarSiExisteUsuario() {
-        Integer valor = (Integer) SharedPreferenceHandler
-                .get(this, Constantes.USUARIO_ID, SharedPreferenceHandler.Type.INT);
-        if (valor != null) cambiarActivity(Constantes.MENU_ACTIVITY);
-    }
-
-    private void chequeoTiposUsuario() {
-        TipoUsuarioDao dao = DatabaseRoom.getInstance(this).tipoUsuarioDao();
-
-        StringBuilder test = new StringBuilder();
-        List<TipoUsuario> tipoUsuarios = dao.get();
-        for (TipoUsuario row : tipoUsuarios) {
-            test.append(row.getNombre()).append("\n");
-            Timber.i("row : " + row.getNombre());
-        }
     }
 }

@@ -6,38 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".perfil.PerfilFragment">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/linea_borde_arriba"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="@dimen/perfil_primerElemento_marginTop" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/linea_borde_izquierda"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="@dimen/perfil_margenHorizontal" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/linea_borde_derecha"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_end="@dimen/perfil_margenHorizontal" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/linea_borde_abajo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_end="50dp" />
+        <include layout="@layout/bordes" />
 
         <ImageView
             android:id="@+id/imgPerfil_configuracion"
