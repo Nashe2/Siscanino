@@ -45,145 +45,96 @@ public class App extends Application {
         Boolean bandera = (Boolean) SharedPreferenceHandler.get(this, Constantes.PRIMERA_EJECUCION, SharedPreferenceHandler.Type.BOOLEAN);
         if (bandera != null && bandera) return;
 
-        inicioTablaTipoUsuario();
-        inicioTablaUsuario();
-        inicioTablaRaza();
-        inicioTablaCanino();
-        inicioTablaUsuarioCanino();
-        inicioTablaSintomasYCaninoSintoma();
-        inicioTablaAlimentacioYCaninoAlimentacion();
-        inicioTablaActividadYCaninoActividad();
-        inicioTablaBanio();
-        inicioTableMedicamento();
-        inicioTableCartillaYVacunasYDesparacitacion();
+        long timestamp = System.currentTimeMillis();
 
-        SharedPreferenceHandler.set(this, Constantes.PRIMERA_EJECUCION, true);
-        Timber.d("Inicializado los datos en la base de datos");
-    }
-
-    private void inicioTablaTipoUsuario() {
-        List<TipoUsuario> INIT = new ArrayList<>(Arrays.asList(
+        baseDatos.tipoUsuarioDao().inserts(
                 new TipoUsuario("Dueño", "El usuario es el encargado del canino"),
                 new TipoUsuario("Familiar", "El usuario es algun familiar del dueño"),
                 new TipoUsuario("Cuidador", "El usuario tendrá acceso restringido ")
-        ));
+        );
 
-        baseDatos.tipoUsuarioDao().inserts(INIT);
-    }
-
-    private void inicioTablaUsuario() {
-        List<Usuario> INIT = new ArrayList<>(Arrays.asList(
+        baseDatos.usuarioDao().inserts(
                 new Usuario("root", "root", 1),
                 new Usuario("nashe", "nashe", 1),
                 new Usuario("luis", "luis", 2)
-        ));
+        );
 
-        baseDatos.usuarioDao().inserts(INIT);
-    }
-
-    private void inicioTablaRaza() {
-        List<Raza> INIT = new ArrayList<>(Arrays.asList(
+        baseDatos.razaDao().inserts(
                 new Raza("Schnauzer", "Es un perro muy carismatico"),
                 new Raza("Chihuahua", "Es un perro muy chiquito"),
                 new Raza("Corgi", "Es un perro inteligente"),
                 new Raza("Akita", "Es un perro muy fiel"),
                 new Raza("Doberman", "Es un perro feroz")
-        ));
+        );
 
-        baseDatos.razaDao().inserts(INIT);
-    }
-
-    public void inicioTablaCanino() {
-        long timestamp = System.currentTimeMillis();
-        List<Canino> INIT = new ArrayList<>(Arrays.asList(
+        baseDatos.caninoDao().inserts(
                 new Canino("Adonis", new Date(timestamp), "Gris", 0, "Es muy bonito", 15.0, "Mediano", 1),
                 new Canino("Luna", new Date(timestamp), "Cafe oscuro", 1, "Es muy brava", 7.0, "Pequeño", 2),
                 new Canino("Ein", new Date(timestamp), "Cafe claro", 0, "Sale en un anime", 11.0, "Pequeño", 3),
                 new Canino("Hachiko", new Date(timestamp), "Cafe claro", 0, "Sale en una pelicula", 16.0, "Mediano", 4)
-        ));
-        baseDatos.caninoDao().inserts(INIT);
-    }
+        );
 
-    public void inicioTablaUsuarioCanino() {
-        List<UsuarioCanino> INIT = new ArrayList<>(Arrays.asList(
+        baseDatos.usuarioCaninoDao().inserts(
                 new UsuarioCanino(1, 1),
                 new UsuarioCanino(1, 2),
                 new UsuarioCanino(1, 3),
                 new UsuarioCanino(1, 4),
                 new UsuarioCanino(3, 3),
                 new UsuarioCanino(3, 4)
-        ));
-        baseDatos.usuarioCaninoDao().inserts(INIT);
-    }
+        );
 
-    public void inicioTablaSintomasYCaninoSintoma() {
-        long timestamp = System.currentTimeMillis();
-        List<Sintoma> INIT = new ArrayList<>(Arrays.asList(
+        baseDatos.sintomaDao().inserts(
                 new Sintoma("Fatiga", new Date(timestamp), "10:00", new Date(timestamp), new Date(timestamp), "Cansado"),
                 new Sintoma("Falta de apetito", new Date(timestamp), "14:00", new Date(timestamp), new Date(timestamp), "Triste")
-        ));
-        baseDatos.sintomaDao().inserts(INIT);
+        );
+
         baseDatos.caninoSintomaDao().inserts(
                 new CaninoSintoma(1, 1, new Date(timestamp), new Date(timestamp), "Posible dolor estomacal"),
                 new CaninoSintoma(1, 2, new Date(timestamp), new Date(timestamp), "Lombrices en el estomago"),
                 new CaninoSintoma(1, 2, new Date(timestamp), new Date(timestamp), "Intoxicación")
         );
-    }
 
-    public void inicioTablaAlimentacioYCaninoAlimentacion() {
-        long timestamp = System.currentTimeMillis();
-        List<Alimentacion> INIT = new ArrayList<>(Arrays.asList(
+        baseDatos.alimentacionDao().inserts(
                 new Alimentacion("Croquetas DogChow", "Son altas en vitaminas"),
                 new Alimentacion("Tortilla", "Les gusta mucho a los perros")
-        ));
-        baseDatos.alimentacionDao().inserts(INIT);
+        );
+
         baseDatos.caninoAlimentacionDao().inserts(
                 new CaninoAlimentacion(1, 1, "250 mg", new Date(timestamp)),
                 new CaninoAlimentacion(1, 1, "250 mg", new Date(timestamp)),
                 new CaninoAlimentacion(1, 2, "2 c/u", new Date(timestamp))
         );
-    }
 
-    public void inicioTablaActividadYCaninoActividad() {
-        long timestamp = System.currentTimeMillis();
-        List<Actividad> INIT = new ArrayList<>(Arrays.asList(
+        baseDatos.actividadDao().inserts(
                 new Actividad("Correr", "25 min", "Es una actividad para oxigenar sus pulmone"),
                 new Actividad("Atrapar la pelota", "30 min", "Sirve para elevar sus reflejos")
-        ));
-        baseDatos.actividadDao().inserts(INIT);
+        );
+
         baseDatos.caninoActividadDao().inserts(
                 new CaninoActividad(1, 1, ":)", "10:00", new Date(timestamp), new Date(timestamp)),
                 new CaninoActividad(1, 1, ":(", "12:00", new Date(timestamp), new Date(timestamp)),
                 new CaninoActividad(1, 2, ":)", "23:00", new Date(timestamp), new Date(timestamp))
         );
-    }
 
-    public void inicioTablaBanio(){
-        long timestamp = System.currentTimeMillis();
-        List<Baño> INIT = new ArrayList<>(Arrays.asList(
+        baseDatos.bañoDao().inserts(
                 new Baño(new Date(timestamp), new Date(timestamp),1),
                 new Baño(new Date(timestamp), new Date(timestamp),1),
                 new Baño(new Date(timestamp), new Date(timestamp),2)
-        ));
-        baseDatos.bañoDao().inserts(INIT);
-    }
+        );
 
-    public void inicioTableMedicamento(){
-        long timestamp = System.currentTimeMillis();
-        List<Medicamento> INIT = new ArrayList<>(Arrays.asList(
+        baseDatos.medicamentoDao().inserts(
                 new Medicamento("Paracetamol","Sirvio para eliviar el dolor","250 mg", new Date(timestamp), new Date(timestamp),1),
                 new Medicamento("Alivianax","Sirvio para eliviar el dolor muscular","250 mg", new Date(timestamp), new Date(timestamp),1)
-        ));
-        baseDatos.medicamentoDao().inserts(INIT);
-    }
+        );
 
-    public void inicioTableCartillaYVacunasYDesparacitacion(){
-        List<Cartilla> INIT = new ArrayList<>(Arrays.asList(
+        baseDatos.cartillaDao().inserts(
                 new Cartilla("QWE","Guadalupe Victoria #534","Salud mejor","Parvovirus",1),
                 new Cartilla("ASD","Iturbide #123","Vida saludable","Parvovirus",2),
                 new Cartilla("ZXC","Vicente Guerrero #75","Salud mejor","Parvovirus",3),
                 new Cartilla("RTY","Guadalupe victoria #534","Vida Saludable","Parvovirus",4)
-        ));
-        baseDatos.cartillaDao().inserts(INIT);
+        );
+
+        SharedPreferenceHandler.set(this, Constantes.PRIMERA_EJECUCION, true);
+        Timber.d("Inicializado los datos en la base de datos");
     }
 }

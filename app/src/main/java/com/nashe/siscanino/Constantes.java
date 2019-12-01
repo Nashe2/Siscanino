@@ -15,12 +15,15 @@ public class Constantes {
     public static final String INICIO_SESION_FRAGMENT = "Inicio Sesion";
     public static final String REGISTRO_FRAGMENT = "Registro";
 
+    public static final String ALIMENTACION_FRAGMENT = "Alimentacion";
+    public static final String ALIMENTACION_FORMULARIO_FRAGMENT = "FormularioAlimentacion";
+
     public static final String ACTIVIDAD_FRAGMENT = "Actividad";
     public static final String SALUD_FRAGMENT = "Salud";
     public static final String PRINCIPAL_FRAGMENT = "Principal";
-    public static final String ALIMENTACION_FRAGMENT = "Alimentacion";
+
     public static final String PERFIL_FRAGMENT = "Perfil";
-    public static final String CANINO_FORMULARIO = "Formulario: Canino";
+    public static final String CANINO_FORMULARIO = "FormularioCanino";
 
     // Listas
     public static final String[] SEXO_LISTA = {"Masculino", "Femenino"};

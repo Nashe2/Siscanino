@@ -52,7 +52,7 @@ public class CaninoAlimentacion {
 
     @Ignore
     public CaninoAlimentacion(int id, int caninoId, int alimentacionId, String porcion, Date fechaHora) {
-        this.id =id;
+        this.id = id;
         this.caninoId = caninoId;
         this.alimentacionId = alimentacionId;
         this.porcion = porcion;
@@ -110,6 +110,10 @@ public class CaninoAlimentacion {
     public boolean equals(@Nullable Object obj) {
         if (obj == null || obj.getClass() != CaninoAlimentacion.class) return false;
         CaninoAlimentacion casteo = (CaninoAlimentacion) obj;
-        return casteo.caninoId == getCaninoId() && casteo.porcion.equals(getPorcion()) && casteo.fechaHora.equals(getFechaHora()) && casteo.alimentacionId == getAlimentacionId();
+        return casteo.getId() == getId()
+                && casteo.caninoId == getCaninoId()
+                && casteo.alimentacionId == getAlimentacionId()
+                && casteo.porcion.equals(getPorcion())
+                && casteo.fechaHora.equals(getFechaHora());
     }
 }

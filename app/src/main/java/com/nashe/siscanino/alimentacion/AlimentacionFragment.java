@@ -27,19 +27,20 @@ import com.nashe.siscanino.data.entity.Canino;
 import com.nashe.siscanino.data.entity.CaninoAlimentacion;
 import com.nashe.siscanino.menu.MenuActivity;
 import com.nashe.siscanino.perfil.PerfilFragment;
+import com.nashe.siscanino.utils.OnItemClickListenerAdapter;
 import com.nashe.siscanino.utils.SharedPreferencesPersonalizados;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 @SuppressLint({"ClickableViewAccessibility", "BinaryOperationInTimber"})
 @SuppressWarnings({"SpellCheckingInspection", "FieldCanBeLocal"})
 public class AlimentacionFragment extends BaseFragment {
 
     // Base de datos
-    private CaninoDao caninoDao;
     private CaninoAlimentacionDao caninoAlimentacionDao;
-    private AlimentacionDao alimentacionDao;
 
     // Views
     private ImageView imgConfig;
@@ -50,7 +51,6 @@ public class AlimentacionFragment extends BaseFragment {
     private AdaptadorAlimentos adaptador;
     private List<CaninoAlimentacion> caninoAlimentacion;
     private int canino_id;
-    private Canino canino;
 
     public AlimentacionFragment() { /* Requiere un constructor vacio */ }
 
@@ -71,16 +71,8 @@ public class AlimentacionFragment extends BaseFragment {
 
         canino_id = SharedPreferencesPersonalizados.obtenerCaninoSeleccionado(activity.getBaseContext());
 
-        if (canino_id == -1) {
-            Toast.makeText(activity.getBaseContext(), "Es necesario seleccionar un canino", Toast.LENGTH_SHORT).show();
-            ((MenuActivity) activity).selectBottomNAvigationItem(R.id.nav_perfil);
-            eliminar(activity.getSupportFragmentManager(), Constantes.ALIMENTACION_FRAGMENT);
-        }
-
         // Configuracion de la BD
-        caninoDao = database.caninoDao();
         caninoAlimentacionDao = database.caninoAlimentacionDao();
-        alimentacionDao = database.alimentacionDao();
         caninoAlimentacion = caninoAlimentacionDao.getLeft(canino_id);
 
         //Configuracion de las views
@@ -91,7 +83,9 @@ public class AlimentacionFragment extends BaseFragment {
         btnAgregarAlimento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Cargar fragment
+                BaseFragment.cargar(activity.getSupportFragmentManager(),
+                        AlimentosFormFragment.newInstance(-1),
+                        Constantes.ALIMENTACION_FORMULARIO_FRAGMENT);
             }
         });
 
@@ -99,8 +93,32 @@ public class AlimentacionFragment extends BaseFragment {
         recyclerViewAlimentacion.setNestedScrollingEnabled(true);
         recyclerViewAlimentacion.setLayoutManager(new GridLayoutManager(activity.getBaseContext(), 1));
         recyclerViewAlimentacion.setHasFixedSize(true);
-        adaptador = new AdaptadorAlimentos(activity.getBaseContext(),R.layout.item_canino_alimento,new ArrayList<CaninoAlimentacion>(caninoAlimentacion));
+        adaptador = new AdaptadorAlimentos(activity.getBaseContext(), R.layout.item_canino_alimento, new ArrayList<CaninoAlimentacion>(caninoAlimentacion));
+        adaptador.setOnItemClickListener(new OnItemClickListenerAdapter() {
+            @Override
+            public void onItemClickDelete(int position, int id) {
+                Timber.d("Eliminar: position: " + position + " id: " + id);
+                adaptador.delete(position);
+                caninoAlimentacionDao.deleteById(id);
+            }
+
+            @Override
+            public void onItemClickUpdate(int position, int id) {
+                Timber.d("Actualizar -> position: " + position + " id: " + id);
+                BaseFragment.cargar(activity.getSupportFragmentManager(),
+                        AlimentosFormFragment.newInstance(id),
+                        Constantes.ALIMENTACION_FORMULARIO_FRAGMENT);
+            }
+        });
+
+
         recyclerViewAlimentacion.setAdapter(adaptador);
+
+        if (canino_id == -1) {
+            Toast.makeText(activity.getBaseContext(), "Es necesario seleccionar un canino", Toast.LENGTH_SHORT).show();
+            ((MenuActivity) activity).selectBottomNAvigationItem(R.id.nav_perfil);
+            //eliminar(activity.getSupportFragmentManager(), Constantes.ALIMENTACION_FRAGMENT);
+        }
 
         return view;
     }
@@ -109,7 +127,6 @@ public class AlimentacionFragment extends BaseFragment {
         caninoAlimentacion = caninoAlimentacionDao.getLeft(id);
         adaptador.setLista(new ArrayList<CaninoAlimentacion>(caninoAlimentacion));
         adaptador.notifyDataSetChanged();
-
     }
 
 }

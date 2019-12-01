@@ -1,68 +1,69 @@
 package com.nashe.siscanino.alimentacion;
 
-import android.content.Context;
-import android.net.Uri;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.nashe.siscanino.BaseFragment;
+import com.nashe.siscanino.Constantes;
 import com.nashe.siscanino.R;
 import com.nashe.siscanino.data.dao.AlimentacionDao;
 import com.nashe.siscanino.data.dao.CaninoAlimentacionDao;
-import com.nashe.siscanino.data.dao.CaninoDao;
+import com.nashe.siscanino.data.entity.Alimentacion;
+import com.nashe.siscanino.data.entity.CaninoAlimentacion;
+import com.nashe.siscanino.utils.CustomSpinnerAdapter;
+import com.nashe.siscanino.utils.DateOperation;
+import com.nashe.siscanino.utils.SharedPreferencesPersonalizados;
+import com.nashe.siscanino.utils.ViewHandler;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link AlimentosFormFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link AlimentosFormFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class AlimentosFormFragment extends BaseFragment {
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import timber.log.Timber;
+
+@SuppressLint({"SimpleDateFormat", "BinaryOperationInTimber", "SetTextI18n"})
+@SuppressWarnings({"SpellCheckingInspection", "FieldCanBeLocal", "NullPointerException", "ConstantConditions"})
+public class AlimentosFormFragment extends BaseFragment
+        implements BaseFragment.Formulario {
+
+    // Por parametro
+    private static final String ARG_CANINO_ALIMENTO = "caninoAlimento_id";
+    private int paramCaninoAlimento;
 
     // Base de datos
-    private CaninoDao caninoDao;
     private CaninoAlimentacionDao caninoAlimentacionDao;
     private AlimentacionDao alimentacionDao;
 
     // Views
-    private MaterialButton btnTiempo;
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private Spinner spinnerAlimentos;
+    private TextInputEditText txtPorcion;
+    private MaterialButton btnFecha;
+    private MaterialButton btnHora;
+    private MaterialButton btnAccion;
+    private MaterialToolbar toolbar;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    // Auxiliares
+    private int canino_id;
+    private CustomSpinnerAdapter customSpinnerAdapter;
+    private List<Alimentacion> alimentos;
+    private int[] idsAlimentos;
+    private String[] nombresAlimentos;
+    private CaninoAlimentacion actualizar;
 
-    private OnFragmentInteractionListener mListener;
+    public AlimentosFormFragment() { /* Requiere un constructor vacio */ }
 
-    public AlimentosFormFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AlimentosFormFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AlimentosFormFragment newInstance(String param1, String param2) {
+    public static AlimentosFormFragment newInstance(int caninoAlimento) {
         AlimentosFormFragment fragment = new AlimentosFormFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(ARG_CANINO_ALIMENTO, caninoAlimento);
         fragment.setArguments(args);
         return fragment;
     }
@@ -71,63 +72,140 @@ public class AlimentosFormFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            paramCaninoAlimento = getArguments().getInt(ARG_CANINO_ALIMENTO);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_alimentos_form, container, false);
-        btnTiempo = view.findViewById(R.id.btnCanino_fecha);
 
-        btnTiempo.setOnClickListener(new View.OnClickListener() {
+        canino_id = SharedPreferencesPersonalizados.obtenerCaninoSeleccionado(activity.getBaseContext());
+
+        // Configuracion de la BD y auxiliares
+        alimentacionDao = database.alimentacionDao();
+        caninoAlimentacionDao = database.caninoAlimentacionDao();
+        alimentos = alimentacionDao.get();
+
+        if (alimentos.size() != 0) {
+            idsAlimentos = new int[alimentos.size()];
+            nombresAlimentos = new String[alimentos.size()];
+            for (int iterador = 0; iterador < alimentos.size(); iterador++) {
+                idsAlimentos[iterador] = alimentos.get(iterador).getId();
+                nombresAlimentos[iterador] = alimentos.get(iterador).getProducto();
+            }
+        } else {
+            Toast.makeText(activity.getBaseContext(), "Es necesario contar con alimentos activos, comuniquese con el servicio técnico", Toast.LENGTH_LONG).show();
+            activity.onBackPressed();
+        }
+
+        // Configuracion extra
+        toolbar = ViewHandler.configToolbarBotonAtras(activity, view);
+        ViewHandler.ocultarBottomNavigation(activity);
+
+        // Views
+        spinnerAlimentos = view.findViewById(R.id.spinner_alimentos);
+        txtPorcion = view.findViewById(R.id.txtAlimentos_porcion);
+        btnHora = view.findViewById(R.id.btnAlimentos_hora);
+        btnFecha = view.findViewById(R.id.btnAlimentos_fecha);
+        btnAccion = view.findViewById(R.id.btnAlimentos_accion);
+
+        // Comportamientos
+        customSpinnerAdapter = new CustomSpinnerAdapter(activity.getBaseContext(), idsAlimentos, nombresAlimentos);
+        spinnerAlimentos.setAdapter(customSpinnerAdapter);
+
+        cargarCampos(paramCaninoAlimento);
+
+        btnFecha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mostrarTimePickerDialog(activity, btnTiempo, "Tiempo: ");
+                mostrarDatePickerDialog(activity, btnFecha, "Fecha: ");
+            }
+        });
+
+        btnHora.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mostrarTimePickerDialog(activity, btnHora, "Hora: ");
+            }
+        });
+
+
+        btnAccion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (checarCampos()) {
+                    toast(getString(R.string.checar_formulario));
+                    return;
+                }
+
+                imprimirResultado();
+                String[] fecha = ViewHandler.obtenerFecha(btnFecha, 7);
+                String[] hora = ViewHandler.obtenerHora(btnHora, 6);
+                Calendar calendario = Calendar.getInstance();
+                calendario.set(Integer.valueOf(fecha[2]), Integer.valueOf(fecha[1]) - 1, Integer.valueOf(fecha[0]),
+                        Integer.valueOf(hora[0]), Integer.valueOf(hora[1]), Integer.valueOf(hora[2]));
+
+                if (paramCaninoAlimento != -1) {
+                    actualizar = caninoAlimentacionDao.getById(paramCaninoAlimento);
+                    actualizar.setPorcion(txtPorcion.getText().toString());
+                    actualizar.setFechaHora(new Date(calendario.getTime().getTime()));
+                    actualizar.setAlimentacionId((int) spinnerAlimentos.getSelectedItemId());
+                    long actualizado = caninoAlimentacionDao.update(actualizar);
+                    Timber.i("ID Actualizado: " + actualizado);
+                } else {
+                    long registro = caninoAlimentacionDao.insert(
+                            new CaninoAlimentacion(canino_id,
+                                    (int) spinnerAlimentos.getSelectedItemId(),
+                                    txtPorcion.getText().toString(),
+                                    new Date(calendario.getTime().getTime()))
+                    );
+                    Timber.i("ID Nuevo: " + registro);
+                }
+
+                ((AlimentacionFragment) activity.getSupportFragmentManager()
+                        .findFragmentByTag(Constantes.ALIMENTACION_FRAGMENT))
+                        .actualizarLista(canino_id);
+
+                activity.onBackPressed();
             }
         });
 
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    @Override
+    public boolean checarCampos() {
+        return txtPorcion.getText().toString().trim().equals("")
+                || btnFecha.getText().toString().trim().equals("Fecha:")
+                || btnHora.getText().toString().trim().equals("Hora:");
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+    public void imprimirResultado() {
+        Timber.d("Registro: "
+                + "\nPorcion: " + txtPorcion.getText()
+                + "\nFecha: " + btnFecha.getText().toString()
+                + "\nHora: " + btnHora.getText().toString()
+                + "\nCanino: " + canino_id
+                + "\nAlimento: " + spinnerAlimentos.getSelectedItemId());
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    public void cargarCampos(int idRegistro) {
+        if (idRegistro == -1) return;
+        btnAccion.setText("Actualizar");
+        actualizar = caninoAlimentacionDao.getById(paramCaninoAlimento);
+        txtPorcion.setText(actualizar.getPorcion());
+        btnFecha.setText("Fecha: " + DateOperation.formatDate(actualizar.getFechaHora().getTime()));
+        btnHora.setText("Hora: " + DateOperation.formatTime(actualizar.getFechaHora().getTime()));
+        int auxCiclo = 0;
+        for (int index = 0; index < alimentos.size(); index++) {
+            if (alimentos.get(index).getId() == actualizar.getAlimentacionId()) {
+                auxCiclo = index;
+                break;
+            }
+        }
+        spinnerAlimentos.setSelection(auxCiclo);
     }
 }

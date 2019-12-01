@@ -127,13 +127,10 @@ public class AdaptadorAlimentos extends RecyclerView.Adapter<AdaptadorAlimentos.
         }
     }
 
-    public void delete(int posicion, int id) {
-        /*int canino = SharedPreferencesPersonalizados.obtenerCaninoSeleccionado(context);
-        if (canino != -1 && canino == id)
-            SharedPreferenceHandler.delete(context, Constantes.CANINO_ID);
+    public void delete(int posicion) {
         lista.remove(posicion);
         notifyItemRemoved(posicion);
-        notifyItemRangeChanged(posicion, lista.size());*/
+        notifyItemRangeChanged(posicion, lista.size());
     }
 
     public void setLista(ArrayList<CaninoAlimentacion> lista) {

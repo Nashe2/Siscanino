@@ -14,6 +14,9 @@ import java.util.List;
 @Dao
 public abstract class CaninoAlimentacionDao
         implements BaseDao<CaninoAlimentacion>,
+        BaseDao.OperationsPrimaryKeyDAO<CaninoAlimentacion>,
+        BaseDao.UpdateDAO<CaninoAlimentacion>,
+        BaseDao.DeleteDAO<CaninoAlimentacion>,
         BaseDao.InnerJoinDAO<Canino, Alimentacion> {
 
     @Override
@@ -25,8 +28,20 @@ public abstract class CaninoAlimentacionDao
     public abstract List<CaninoAlimentacion> get();
 
     @Override
-    @Query("DELETE FROM " + CaninoAlimentacion.SCHEMA.TABLE)
+    @Query("DELETE FROM " + SCHEMA.TABLE)
     public abstract void drop();
+
+    @Override
+    @Query("SELECT * FROM " + SCHEMA.TABLE + " WHERE id = :id")
+    abstract public CaninoAlimentacion getById(int id);
+
+    @Override
+    @Query("SELECT * FROM " + SCHEMA.TABLE + " WHERE id IN(:ids)")
+    abstract public List<CaninoAlimentacion> getByIds(long[] ids);
+
+    @Override
+    @Query("DELETE FROM " + SCHEMA.TABLE + " WHERE id = :id")
+    abstract public int deleteById(int id);
 
     @Override
     @Query("SELECT * FROM Canino " +

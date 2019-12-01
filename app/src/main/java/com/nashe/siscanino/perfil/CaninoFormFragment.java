@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
@@ -60,8 +61,8 @@ public class CaninoFormFragment extends BaseFragment {
     // Auxiliares
     private ArrayAdapter arrayAdapter;
     private CustomSpinnerAdapter customSpinnerAdapter;
-    private List<Raza> listaRaza;
-    private Canino caninoActualizar;
+    private List<Raza> razas;
+    private Canino actualizar;
 
     public CaninoFormFragment() { /* Requiere un constructor vacio */ }
 
@@ -91,7 +92,7 @@ public class CaninoFormFragment extends BaseFragment {
         caninoDAO = database.caninoDao();
         usuarioCaninoDAO = database.usuarioCaninoDao();
         razaDAO = database.razaDao();
-        listaRaza = razaDAO.get();
+        razas = razaDAO.get();
 
         // Configuracion del menu
         toolbar = ViewHandler.configToolbarBotonAtras(activity, view);
@@ -132,16 +133,16 @@ public class CaninoFormFragment extends BaseFragment {
         arrayAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinnerTamanio.setAdapter(arrayAdapter);
 
-        if (listaRaza.size() != 0) {
-            int[] ids = new int[listaRaza.size()];
-            String[] nombres = new String[listaRaza.size()];
-            for (int iterador = 0; iterador < listaRaza.size(); iterador++) {
-                ids[iterador] = listaRaza.get(iterador).getId();
-                nombres[iterador] = listaRaza.get(iterador).getNombre();
+        if (razas.size() != 0) {
+            int[] ids = new int[razas.size()];
+            String[] nombres = new String[razas.size()];
+            for (int iterador = 0; iterador < razas.size(); iterador++) {
+                ids[iterador] = razas.get(iterador).getId();
+                nombres[iterador] = razas.get(iterador).getNombre();
             }
             customSpinnerAdapter = new CustomSpinnerAdapter(activity.getBaseContext(), ids, nombres);
         } else {
-            customSpinnerAdapter = new CustomSpinnerAdapter(activity.getBaseContext(), new int[]{0}, new String[]{"Desconocida"});
+            Toast.makeText(activity.getBaseContext(), "Es necesario contar con tipos de raza activos, comuniquese con el servicio técnico", Toast.LENGTH_LONG).show();
         }
 
         spinnerRaza.setAdapter(customSpinnerAdapter);
@@ -150,27 +151,27 @@ public class CaninoFormFragment extends BaseFragment {
         if (paramCanino != -1) {
             btnAccion.setText("Actualizar");
 
-            caninoActualizar = caninoDAO.getById(paramCanino);
-            txtNombre.setText(caninoActualizar.getNombre());
-            txtColor.setText(caninoActualizar.getColor());
-            txtPeso.setText(caninoActualizar.getPeso() + "");
-            txtSenias.setText(caninoActualizar.getSenias());
-            btnFecha.setText("Fecha: " + DateOperation.formatDate(caninoActualizar.getNacimiento().getTime()));
+            actualizar = caninoDAO.getById(paramCanino);
+            txtNombre.setText(actualizar.getNombre());
+            txtColor.setText(actualizar.getColor());
+            txtPeso.setText(actualizar.getPeso() + "");
+            txtSenias.setText(actualizar.getSenias());
+            btnFecha.setText("Fecha: " + DateOperation.formatDate(actualizar.getNacimiento().getTime()));
             int auxTamanio = 0;
             for (int index = 0; index < Constantes.TAMANIO_LISTA.length; index++) {
-                if (Constantes.TAMANIO_LISTA[index].equals(caninoActualizar.getTamanio())) {
+                if (Constantes.TAMANIO_LISTA[index].equals(actualizar.getTamanio())) {
                     auxTamanio = index;
                 }
             }
             spinnerTamanio.setSelection(auxTamanio);
             int auxRaza = 0;
-            for (int index = 0; index < listaRaza.size(); index++) {
-                if (listaRaza.get(index).getId() == caninoActualizar.getRazaId()) {
+            for (int index = 0; index < razas.size(); index++) {
+                if (razas.get(index).getId() == actualizar.getRazaId()) {
                     auxRaza = index;
                 }
             }
             spinnerRaza.setSelection(auxRaza);
-            spinnerSexo.setSelection(caninoActualizar.getSexo());
+            spinnerSexo.setSelection(actualizar.getSexo());
         }
 
         btnAccion.setOnClickListener(new View.OnClickListener() {
@@ -200,10 +201,10 @@ public class CaninoFormFragment extends BaseFragment {
 
                 String[] fechaSplit = fecha.split("\\/");
                 Calendar calendario = Calendar.getInstance();
-                calendario.set(Integer.valueOf(fechaSplit[2]), Integer.valueOf(fechaSplit[1])-1, Integer.valueOf(fechaSplit[0]));
+                calendario.set(Integer.valueOf(fechaSplit[2]), Integer.valueOf(fechaSplit[1]) - 1, Integer.valueOf(fechaSplit[0]));
 
                 if (paramCanino != -1) { // Actualizar
-                    caninoActualizar = new Canino(paramCanino,
+                    actualizar = new Canino(paramCanino,
                             txtNombre.getText().toString(),
                             new Date(calendario.getTime().getTime()),
                             txtColor.getText().toString(),
@@ -212,8 +213,8 @@ public class CaninoFormFragment extends BaseFragment {
                             Double.valueOf(txtPeso.getText().toString()),
                             (String) spinnerTamanio.getSelectedItem(),
                             (int) spinnerRaza.getSelectedItemId());
-                    long caninoo_id = caninoDAO.update(caninoActualizar);
-                    Timber.i("Canino actualizado: " + caninoo_id);
+                    long actualizado = caninoDAO.update(actualizar);
+                    Timber.i("Registro actualizado: " + actualizado);
                 } else { // Agregar
                     Canino caninoNuevo = new Canino(txtNombre.getText().toString(),
                             new Date(calendario.getTime().getTime()),

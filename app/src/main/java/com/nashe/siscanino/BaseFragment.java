@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -68,6 +69,14 @@ public abstract class BaseFragment extends Fragment {
         return true;
     }
 
+    protected void back(FragmentManager manager, String tag) {
+        manager.popBackStack(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
+
+    protected void toast(String mensaje){
+        Toast.makeText(activity.getBaseContext(),mensaje,Toast.LENGTH_SHORT).show();
+    }
+
     public static void cargar(FragmentManager manager, Fragment fragment, String tag) {
         List<Fragment> fragments = manager.getFragments();
         FragmentTransaction transaccion = manager.beginTransaction()
@@ -109,4 +118,11 @@ public abstract class BaseFragment extends Fragment {
         dialogFragment.show(manager, TimePickerFragment.TAG);
     }
 
+    public interface Formulario {
+        boolean checarCampos();
+
+        void imprimirResultado();
+
+        void cargarCampos(int idRegistro);
+    }
 }

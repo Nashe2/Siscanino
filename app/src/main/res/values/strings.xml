@@ -19,6 +19,8 @@
     <string name="corregir_usuario">Usuario no valido</string>
     <string name="corregir_contrasenia">Contraseña no valido</string>
 
+    <string name="checar_formulario">Revise que todos los campos del formulario han sido llenados</string>
+
     <string-array name="sexo_lista">
         <item>Masculino</item>
         <item>Femenino</item>

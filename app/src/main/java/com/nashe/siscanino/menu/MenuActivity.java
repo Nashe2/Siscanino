@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -27,6 +28,7 @@ import java.util.List;
 import timber.log.Timber;
 
 @SuppressLint("BinaryOperationInTimber")
+@SuppressWarnings({"FieldCanBeLocal", "NullPointerException"})
 public class MenuActivity extends BaseActivity
         implements BaseFragment.OnFragmentInteractionListener,
         BottomNavigationView.OnNavigationItemSelectedListener {
@@ -34,6 +36,16 @@ public class MenuActivity extends BaseActivity
     private DatabaseRoom database;
 
     protected BottomNavigationView bottomNav;
+
+    /*
+    private List<String> regexFragmentsFormularios = Arrays.asList(
+            Constantes.CANINO_FORMULARIO,
+            Constantes.ALIMENTACION_FORMULARIO_FRAGMENT
+    );*/
+
+    private String regexFragmentsFormularios = ""
+            + Constantes.CANINO_FORMULARIO + "|"
+            + Constantes.ALIMENTACION_FORMULARIO_FRAGMENT + "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +65,7 @@ public class MenuActivity extends BaseActivity
         bottomNav.setSelectedItemId(R.id.nav_principal);
     }
 
-     public void selectBottomNAvigationItem(int itemId) {
+    public void selectBottomNAvigationItem(int itemId) {
         bottomNav.setSelectedItemId(itemId);
     }
 
@@ -128,28 +140,15 @@ public class MenuActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
-        // super.onBackPressed();
-        try {
-            Boolean banderaCaninoFormulario = getSupportFragmentManager().findFragmentByTag(Constantes.CANINO_FORMULARIO).isVisible();
-
-            if (banderaCaninoFormulario != null && banderaCaninoFormulario) {
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        for (int index = 0; index < fragments.size(); index++) {
+            if (fragments.get(index).getTag() != null
+                    && fragments.get(index).getTag().matches(regexFragmentsFormularios)) {
+                Timber.d(fragments.get(index).getTag() + " onBackPressed");
                 ViewHandler.mostrarBottomNavigation(this);
-                List<Canino> caninos = database.caninoDao().get();
-                List<UsuarioCanino> join = database.usuarioCaninoDao().get();
-
-                for (Canino item : caninos) {
-                    Timber.d("Canino -> id: " + item.getNombre() + " nombre: " + item.getNombre());
-                }
-
-                for (UsuarioCanino item : join) {
-                    Timber.d("Usuario:" + item.getIdUsuario() + " - Canino: " + item.getIdCacnino());
-                }
-
                 super.onBackPressed();
                 return;
             }
-        } catch (NullPointerException e) {
-            Timber.e(e);
         }
 
         if (bottomNav.getSelectedItemId() != R.id.nav_principal) {
