@@ -14,6 +14,7 @@ import com.nashe.siscanino.BaseActivity;
 import com.nashe.siscanino.BaseFragment;
 import com.nashe.siscanino.Constantes;
 import com.nashe.siscanino.R;
+import com.nashe.siscanino.actividad.ActividadFragment;
 import com.nashe.siscanino.alimentacion.AlimentacionFragment;
 import com.nashe.siscanino.autentificacion.AutentificacionActivity;
 import com.nashe.siscanino.data.DatabaseRoom;
@@ -41,7 +42,8 @@ public class MenuActivity extends BaseActivity
     private String regexFragmentsFormularios = ""
             + Constantes.CANINO_FORMULARIO + "|"
             + Constantes.ALIMENTACION_FORMULARIO_FRAGMENT + "|"
-            + Constantes.SINTOMA_FORMULARIO_FRAGMENT + "";
+            + Constantes.SINTOMA_FORMULARIO_FRAGMENT + "|"
+            + Constantes.ACTIVIDAD_FORMULARIO_FRAGMENT + "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +99,7 @@ public class MenuActivity extends BaseActivity
         switch (fragment) {
             case Constantes.ACTIVIDAD_FRAGMENT:
                 Timber.i("Actividad");
-                //BaseFragment.cargar(this.getSupportFragmentManager(), CaninoFragment.newInstance(), Constantes.ACTIVIDAD_FRAGMENT);
+                BaseFragment.cargar(this.getSupportFragmentManager(), ActividadFragment.newInstance(), Constantes.ACTIVIDAD_FRAGMENT);
                 break;
             case Constantes.SINTOMA_FRAGMENT:
                 Timber.i("Salud");

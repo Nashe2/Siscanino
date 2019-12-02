@@ -11,7 +11,6 @@ import java.util.Date;
 
 import static com.nashe.siscanino.data.entity.CaninoActividad.SCHEMA.*;
 
-
 @Entity(tableName = TABLE,
         foreignKeys = {
                 @ForeignKey(entity = Canino.class,
@@ -32,9 +31,7 @@ public class CaninoActividad {
         String CANINO = "canino_id";
         String ACTIVIDAD = "actividad_id";
         String NOMBRE = "nombre";
-        String HORA = "hora";
-        String CREATED_AT = "created_at";
-        String UPDATED_AT = "updated_at";
+        String FECHA_HORA = "fecha_hora";
     }
 
     @PrimaryKey(autoGenerate = true)
@@ -46,35 +43,27 @@ public class CaninoActividad {
     private int actividadId;
     @ColumnInfo(name = NOMBRE)
     private String nombre;
-    @ColumnInfo(name = HORA)
-    private String hora;
-    @ColumnInfo(name = CREATED_AT)
-    private Date created;
-    @ColumnInfo(name = UPDATED_AT)
-    private Date updated;
+    @ColumnInfo(name = FECHA_HORA)
+    private Date fechaHora;
 
     @Ignore
     public CaninoActividad() {
     }
 
     @Ignore
-    public CaninoActividad(int id, int caninoId, int actividadId, String nombre, String hora, Date created, Date updated) {
+    public CaninoActividad(int id, int caninoId, int actividadId, String nombre, Date fechaHora) {
         this.id = id;
         this.caninoId = caninoId;
         this.actividadId = actividadId;
         this.nombre = nombre;
-        this.hora = hora;
-        this.created = created;
-        this.updated = updated;
+        this.fechaHora = fechaHora;
     }
 
-    public CaninoActividad(int caninoId, int actividadId, String nombre, String hora, Date created, Date updated) {
+    public CaninoActividad(int caninoId, int actividadId, String nombre, Date fechaHora) {
         this.caninoId = caninoId;
         this.actividadId = actividadId;
         this.nombre = nombre;
-        this.hora = hora;
-        this.created = created;
-        this.updated = updated;
+        this.fechaHora = fechaHora;
     }
 
     public int getId() {
@@ -109,34 +98,22 @@ public class CaninoActividad {
         this.nombre = nombre;
     }
 
-    public String getHora() {
-        return hora;
+    public Date getFechaHora() {
+        return fechaHora;
     }
 
-    public void setHora(String hora) {
-        this.hora = hora;
-    }
-
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(Date created) {
-        this.created = created;
-    }
-
-    public Date getUpdated() {
-        return updated;
-    }
-
-    public void setUpdated(Date updated) {
-        this.updated = updated;
+    public void setFechaHora(Date fechaHora) {
+        this.fechaHora = fechaHora;
     }
 
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj == null || obj.getClass() != CaninoActividad.class) return false;
         CaninoActividad casteo = (CaninoActividad) obj;
-        return casteo.caninoId == getCaninoId() && casteo.nombre.equals(getNombre()) && casteo.hora.equals(getHora()) && casteo.created.equals(getCreated()) && casteo.updated.equals(getUpdated()) && casteo.actividadId == getActividadId();
+        return casteo.id == getId()
+                && casteo.caninoId == getCaninoId()
+                && casteo.actividadId == getActividadId()
+                && casteo.nombre.equals(getNombre())
+                && casteo.fechaHora.equals(getFechaHora());
     }
 }

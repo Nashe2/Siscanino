@@ -6,6 +6,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import java.util.Date;
+
 import static com.nashe.siscanino.data.entity.Actividad.SCHEMA.*;
 
 @Entity(tableName = TABLE)
@@ -24,7 +26,7 @@ public class Actividad {
     @ColumnInfo(name = TIPO_ACTIVIDAD)
     private String tipo;
     @ColumnInfo(name = TIEMPO)
-    private String tiempo;
+    private Date tiempo;
     @ColumnInfo(name = DESCRIPCION)
     private String descripcion;
 
@@ -33,7 +35,7 @@ public class Actividad {
     }
 
     @Ignore
-    public Actividad(int id, String tipo, String tiempo, String descripcion) {
+    public Actividad(int id, String tipo, Date tiempo, String descripcion) {
         this.id = id;
         this.tipo = tipo;
         this.tiempo = tiempo;
@@ -41,7 +43,7 @@ public class Actividad {
     }
 
 
-    public Actividad(String tipo, String tiempo, String descripcion) {
+    public Actividad(String tipo, Date tiempo, String descripcion) {
         this.tipo = tipo;
         this.tiempo = tiempo;
         this.descripcion = descripcion;
@@ -63,11 +65,11 @@ public class Actividad {
         this.tipo = tipo;
     }
 
-    public String getTiempo() {
+    public Date getTiempo() {
         return tiempo;
     }
 
-    public void setTiempo(String tiempo) {
+    public void setTiempo(Date tiempo) {
         this.tiempo = tiempo;
     }
 
@@ -83,6 +85,9 @@ public class Actividad {
     public boolean equals(@Nullable Object obj) {
         if (obj == null || obj.getClass() != Actividad.class) return false;
         Actividad casteo = (Actividad) obj;
-        return casteo.id == getId() && casteo.tipo.equals(getTipo()) && casteo.tiempo.equals(getTiempo()) && casteo.descripcion.equals(getDescripcion());
+        return casteo.id == getId()
+                && casteo.tipo.equals(getTipo())
+                && casteo.tiempo.equals(getTiempo())
+                && casteo.descripcion.equals(getDescripcion());
     }
 }

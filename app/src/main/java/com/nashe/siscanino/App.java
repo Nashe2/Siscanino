@@ -22,6 +22,7 @@ import com.nashe.siscanino.utils.SharedPreferenceHandler;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -105,15 +106,16 @@ public class App extends Application {
                 new CaninoAlimentacion(1, 2, "2 c/u", new Date(timestamp))
         );
 
+        // FIXME: Checar el tiempo
         baseDatos.actividadDao().inserts(
-                new Actividad("Correr", "25 min", "Es una actividad para oxigenar sus pulmone"),
-                new Actividad("Atrapar la pelota", "30 min", "Sirve para elevar sus reflejos")
+                new Actividad("Correr", new Date(timestamp), "Es una actividad para oxigenar sus pulmone"),
+                new Actividad("Atrapar la pelota", new Date(timestamp), "Sirve para elevar sus reflejos")
         );
 
         baseDatos.caninoActividadDao().inserts(
-                new CaninoActividad(1, 1, ":)", "10:00", new Date(timestamp), new Date(timestamp)),
-                new CaninoActividad(1, 1, ":(", "12:00", new Date(timestamp), new Date(timestamp)),
-                new CaninoActividad(1, 2, ":)", "23:00", new Date(timestamp), new Date(timestamp))
+                new CaninoActividad(1, 1, "Ejercicio matutino", new Date(timestamp)),
+                new CaninoActividad(1, 1, "Juego en la casa", new Date(timestamp)),
+                new CaninoActividad(1, 2, "Juego en el parque", new Date(timestamp))
         );
 
         baseDatos.bañoDao().inserts(

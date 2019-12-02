@@ -19,6 +19,8 @@ public class Constantes {
     public static final String ALIMENTACION_FORMULARIO_FRAGMENT = "FormularioAlimentacion";
 
     public static final String ACTIVIDAD_FRAGMENT = "Actividad";
+    public static final String ACTIVIDAD_FORMULARIO_FRAGMENT = "FormularioActividad";
+
     public static final String SALUD_FRAGMENT = "Salud";
     public static final String PRINCIPAL_FRAGMENT = "Principal";
 
