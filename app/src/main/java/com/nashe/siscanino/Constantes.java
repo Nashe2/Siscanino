@@ -22,6 +22,9 @@ public class Constantes {
     public static final String SALUD_FRAGMENT = "Salud";
     public static final String PRINCIPAL_FRAGMENT = "Principal";
 
+    public static final String SINTOMA_FRAGMENT = "Sintoma";
+    public static final String SINTOMA_FORMULARIO_FRAGMENT = "FormularioSintoma";
+
     public static final String PERFIL_FRAGMENT = "Perfil";
     public static final String CANINO_FORMULARIO = "FormularioCanino";
 

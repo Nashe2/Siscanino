@@ -84,14 +84,14 @@ public class App extends Application {
         );
 
         baseDatos.sintomaDao().inserts(
-                new Sintoma("Fatiga", new Date(timestamp), "10:00", new Date(timestamp), new Date(timestamp), "Cansado"),
-                new Sintoma("Falta de apetito", new Date(timestamp), "14:00", new Date(timestamp), new Date(timestamp), "Triste")
+                new Sintoma("Fatiga", "Cansado"),
+                new Sintoma("Falta de apetito", "Triste")
         );
 
         baseDatos.caninoSintomaDao().inserts(
-                new CaninoSintoma(1, 1, new Date(timestamp), new Date(timestamp), "Posible dolor estomacal"),
-                new CaninoSintoma(1, 2, new Date(timestamp), new Date(timestamp), "Lombrices en el estomago"),
-                new CaninoSintoma(1, 2, new Date(timestamp), new Date(timestamp), "Intoxicación")
+                new CaninoSintoma(1, 1, "Posible dolor estomacal", new Date(timestamp)),
+                new CaninoSintoma(1, 2, "Lombrices en el estomago", new Date(timestamp)),
+                new CaninoSintoma(1, 2, "Intoxicación", new Date(timestamp))
         );
 
         baseDatos.alimentacionDao().inserts(
@@ -117,21 +117,21 @@ public class App extends Application {
         );
 
         baseDatos.bañoDao().inserts(
-                new Baño(new Date(timestamp), new Date(timestamp),1),
-                new Baño(new Date(timestamp), new Date(timestamp),1),
-                new Baño(new Date(timestamp), new Date(timestamp),2)
+                new Baño(new Date(timestamp), new Date(timestamp), 1),
+                new Baño(new Date(timestamp), new Date(timestamp), 1),
+                new Baño(new Date(timestamp), new Date(timestamp), 2)
         );
 
         baseDatos.medicamentoDao().inserts(
-                new Medicamento("Paracetamol","Sirvio para eliviar el dolor","250 mg", new Date(timestamp), new Date(timestamp),1),
-                new Medicamento("Alivianax","Sirvio para eliviar el dolor muscular","250 mg", new Date(timestamp), new Date(timestamp),1)
+                new Medicamento("Paracetamol", "Sirvio para eliviar el dolor", "250 mg", new Date(timestamp), new Date(timestamp), 1),
+                new Medicamento("Alivianax", "Sirvio para eliviar el dolor muscular", "250 mg", new Date(timestamp), new Date(timestamp), 1)
         );
 
         baseDatos.cartillaDao().inserts(
-                new Cartilla("QWE","Guadalupe Victoria #534","Salud mejor","Parvovirus",1),
-                new Cartilla("ASD","Iturbide #123","Vida saludable","Parvovirus",2),
-                new Cartilla("ZXC","Vicente Guerrero #75","Salud mejor","Parvovirus",3),
-                new Cartilla("RTY","Guadalupe victoria #534","Vida Saludable","Parvovirus",4)
+                new Cartilla("QWE", "Guadalupe Victoria #534", "Salud mejor", "Parvovirus", 1),
+                new Cartilla("ASD", "Iturbide #123", "Vida saludable", "Parvovirus", 2),
+                new Cartilla("ZXC", "Vicente Guerrero #75", "Salud mejor", "Parvovirus", 3),
+                new Cartilla("RTY", "Guadalupe victoria #534", "Vida Saludable", "Parvovirus", 4)
         );
 
         SharedPreferenceHandler.set(this, Constantes.PRIMERA_EJECUCION, true);

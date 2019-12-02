@@ -13,6 +13,9 @@ import java.util.List;
 
 @Dao
 public abstract class CaninoSintomaDao implements BaseDao<CaninoSintoma>,
+        BaseDao.UpdateDAO<CaninoSintoma>,
+        BaseDao.DeleteDAO<CaninoSintoma>,
+        BaseDao.OperationsPrimaryKeyDAO<CaninoSintoma>,
         BaseDao.InnerJoinDAO<Canino, Sintoma> {
 
     @Override
@@ -24,8 +27,20 @@ public abstract class CaninoSintomaDao implements BaseDao<CaninoSintoma>,
     public abstract List<CaninoSintoma> get();
 
     @Override
-    @Query("DELETE FROM " + CaninoSintoma.SCHEMA.TABLE)
+    @Query("DELETE FROM " + SCHEMA.TABLE)
     public abstract void drop();
+
+    @Override
+    @Query("SELECT * FROM " + SCHEMA.TABLE + " WHERE id = :id")
+    abstract public CaninoSintoma getById(int id);
+
+    @Override
+    @Query("SELECT * FROM " + SCHEMA.TABLE + " WHERE id IN(:ids)")
+    abstract public List<CaninoSintoma> getByIds(long[] ids);
+
+    @Override
+    @Query("DELETE FROM " + SCHEMA.TABLE + " WHERE id = :id")
+    abstract public int deleteById(int id);
 
     @Override
     @Query("SELECT * FROM Canino " +
@@ -40,4 +55,10 @@ public abstract class CaninoSintomaDao implements BaseDao<CaninoSintoma>,
             "ON Sintoma_id = " + SCHEMA.TABLE + ".Sintoma_id " +
             "WHERE " + SCHEMA.TABLE + ".Sintoma_id = :idLeft")
     public abstract List<Sintoma> getRightJoinLeft(int idLeft);
+
+    @Query("SELECT * FROM CaninoSintoma WHERE canino_id = :left")
+    public abstract List<CaninoSintoma> getLeft(int left);
+
+    @Query("SELECT * FROM CaninoSintoma WHERE sintoma_id = :right")
+    public abstract List<CaninoSintoma> getRight(int right);
 }

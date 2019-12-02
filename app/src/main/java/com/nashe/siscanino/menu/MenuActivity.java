@@ -20,6 +20,7 @@ import com.nashe.siscanino.data.DatabaseRoom;
 import com.nashe.siscanino.data.entity.Canino;
 import com.nashe.siscanino.data.entity.UsuarioCanino;
 import com.nashe.siscanino.perfil.PerfilFragment;
+import com.nashe.siscanino.sintoma.SintomaFragment;
 import com.nashe.siscanino.utils.SharedPreferencesPersonalizados;
 import com.nashe.siscanino.utils.ViewHandler;
 
@@ -37,15 +38,10 @@ public class MenuActivity extends BaseActivity
 
     protected BottomNavigationView bottomNav;
 
-    /*
-    private List<String> regexFragmentsFormularios = Arrays.asList(
-            Constantes.CANINO_FORMULARIO,
-            Constantes.ALIMENTACION_FORMULARIO_FRAGMENT
-    );*/
-
     private String regexFragmentsFormularios = ""
             + Constantes.CANINO_FORMULARIO + "|"
-            + Constantes.ALIMENTACION_FORMULARIO_FRAGMENT + "";
+            + Constantes.ALIMENTACION_FORMULARIO_FRAGMENT + "|"
+            + Constantes.SINTOMA_FORMULARIO_FRAGMENT + "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +74,7 @@ public class MenuActivity extends BaseActivity
                 break;
             case R.id.nav_salud:
                 if (bottomNav.getSelectedItemId() != R.id.nav_salud)
-                    cambiarFragment(Constantes.SALUD_FRAGMENT);
+                    cambiarFragment(Constantes.SINTOMA_FRAGMENT);
                 break;
             case R.id.nav_principal:
                 if (bottomNav.getSelectedItemId() != R.id.nav_principal)
@@ -103,9 +99,9 @@ public class MenuActivity extends BaseActivity
                 Timber.i("Actividad");
                 //BaseFragment.cargar(this.getSupportFragmentManager(), CaninoFragment.newInstance(), Constantes.ACTIVIDAD_FRAGMENT);
                 break;
-            case Constantes.SALUD_FRAGMENT:
+            case Constantes.SINTOMA_FRAGMENT:
                 Timber.i("Salud");
-                //BaseFragment.cargar(this.getSupportFragmentManager(), PerfilFragment.newInstance(), Constantes.SALUD_FRAGMENT);
+                BaseFragment.cargar(this.getSupportFragmentManager(), SintomaFragment.newInstance(), Constantes.SINTOMA_FRAGMENT);
                 break;
             case Constantes.PRINCIPAL_FRAGMENT:
                 Timber.i("Principal");

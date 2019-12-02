@@ -30,9 +30,8 @@ public class CaninoSintoma {
         String ID = "id";
         String CANINO = "canino_id";
         String SINTOMA = "sintoma_id";
-        String CREATED_AT = "created_at";
-        String UPDATED_AT = "updated_at";
-        String DIAGNOSTICO = "diagnostico";
+        String DESCRIPCION = "descripcion";
+        String FECHA_HORA = "fechaHora";
     }
 
     @PrimaryKey(autoGenerate = true)
@@ -42,33 +41,29 @@ public class CaninoSintoma {
     private int caninoId;
     @ColumnInfo(name = SINTOMA)
     private int sintomaId;
-    @ColumnInfo(name = CREATED_AT)
-    private Date created;
-    @ColumnInfo(name = UPDATED_AT)
-    private Date updated;
-    @ColumnInfo(name = DIAGNOSTICO)
-    private String diagnostico;
+    @ColumnInfo(name = DESCRIPCION)
+    private String descripcion;
+    @ColumnInfo(name = FECHA_HORA)
+    private Date fechaHora;
 
     @Ignore
     public CaninoSintoma() {
     }
 
     @Ignore
-    public CaninoSintoma(int id, int caninoId, int sintomaId, Date created, Date updated, String diagnostico) {
+    public CaninoSintoma(int id, int caninoId, int sintomaId, String descripcion, Date fechaHora, Date updated) {
         this.id = id;
         this.caninoId = caninoId;
         this.sintomaId = sintomaId;
-        this.created = created;
-        this.updated = updated;
-        this.diagnostico = diagnostico;
+        this.descripcion = descripcion;
+        this.fechaHora = fechaHora;
     }
 
-    public CaninoSintoma(int caninoId, int sintomaId, Date created, Date updated, String diagnostico) {
+    public CaninoSintoma(int caninoId, int sintomaId, String descripcion, Date fechaHora) {
         this.caninoId = caninoId;
         this.sintomaId = sintomaId;
-        this.created = created;
-        this.updated = updated;
-        this.diagnostico = diagnostico;
+        this.descripcion = descripcion;
+        this.fechaHora = fechaHora;
     }
 
     public int getId() {
@@ -95,34 +90,30 @@ public class CaninoSintoma {
         this.sintomaId = sintomaId;
     }
 
-    public Date getCreated() {
-        return created;
+    public Date getFechaHora() {
+        return fechaHora;
     }
 
-    public void setCreated(Date created) {
-        this.created = created;
+    public void setFechaHora(Date fechaHora) {
+        this.fechaHora = fechaHora;
     }
 
-    public Date getUpdated() {
-        return updated;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setUpdated(Date updated) {
-        this.updated = updated;
-    }
-
-    public String getDiagnostico() {
-        return diagnostico;
-    }
-
-    public void setDiagnostico(String diagnostico) {
-        this.diagnostico = diagnostico;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj == null || obj.getClass() != CaninoSintoma.class) return false;
         CaninoSintoma casteo = (CaninoSintoma) obj;
-        return casteo.caninoId == getCaninoId() && casteo.created.equals(getCreated()) && casteo.updated.equals(getUpdated()) && casteo.diagnostico.equals(getDiagnostico()) && casteo.sintomaId == getSintomaId();
+        return casteo.getId() == getId()
+                && casteo.caninoId == getCaninoId()
+                && casteo.sintomaId == getSintomaId()
+                && casteo.descripcion.equals(getDescripcion())
+                && casteo.fechaHora.equals(getFechaHora());
     }
 }

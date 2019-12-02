@@ -1,7 +1,12 @@
-package com.nashe.siscanino.alimentacion;
+package com.nashe.siscanino.sintoma;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +19,10 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.nashe.siscanino.BaseFragment;
 import com.nashe.siscanino.Constantes;
 import com.nashe.siscanino.R;
-import com.nashe.siscanino.data.dao.AlimentacionDao;
-import com.nashe.siscanino.data.dao.CaninoAlimentacionDao;
-import com.nashe.siscanino.data.entity.Alimentacion;
-import com.nashe.siscanino.data.entity.CaninoAlimentacion;
+import com.nashe.siscanino.data.dao.CaninoSintomaDao;
+import com.nashe.siscanino.data.dao.SintomaDao;
+import com.nashe.siscanino.data.entity.CaninoSintoma;
+import com.nashe.siscanino.data.entity.Sintoma;
 import com.nashe.siscanino.utils.CustomSpinnerAdapter;
 import com.nashe.siscanino.utils.DateOperation;
 import com.nashe.siscanino.utils.SharedPreferencesPersonalizados;
@@ -31,20 +36,20 @@ import timber.log.Timber;
 
 @SuppressLint({"SimpleDateFormat", "BinaryOperationInTimber", "SetTextI18n"})
 @SuppressWarnings({"SpellCheckingInspection", "FieldCanBeLocal", "NullPointerException", "ConstantConditions"})
-public class AlimentosFormFragment extends BaseFragment
+public class SintomaFormFragment extends BaseFragment
         implements BaseFragment.Formulario {
 
     // Por parametro
-    private static final String ARG_CANINO_ALIMENTO = "caninoAlimento_id";
+    private static final String ARG_CANINO_SINTOMA = "caninoSintoma_id";
     private int param;
 
     // Base de datos
-    private CaninoAlimentacionDao dao;
-    private AlimentacionDao daoDerecha;
+    private CaninoSintomaDao dao;
+    private SintomaDao daoDerecha;
 
     // Views
     private Spinner spinner;
-    private TextInputEditText txtPorcion;
+    private TextInputEditText txtDescripcion;
     private MaterialButton btnFecha;
     private MaterialButton btnHora;
     private MaterialButton btnAccion;
@@ -53,17 +58,17 @@ public class AlimentosFormFragment extends BaseFragment
     // Auxiliares
     private int canino_id;
     private CustomSpinnerAdapter customSpinnerAdapter;
-    private List<Alimentacion> listaDerecha;
+    private List<Sintoma> listaDerecha;
     private int[] ids;
     private String[] nombres;
-    private CaninoAlimentacion actualizar;
+    private CaninoSintoma actualizar;
 
-    public AlimentosFormFragment() { /* Requiere un constructor vacio */ }
+    public SintomaFormFragment() { /* Requiere un constructor vacio */ }
 
-    public static AlimentosFormFragment newInstance(int caninoAlimento) {
-        AlimentosFormFragment fragment = new AlimentosFormFragment();
+    public static SintomaFormFragment newInstance(int sintoma) {
+        SintomaFormFragment fragment = new SintomaFormFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_CANINO_ALIMENTO, caninoAlimento);
+        args.putInt(ARG_CANINO_SINTOMA, sintoma);
         fragment.setArguments(args);
         return fragment;
     }
@@ -72,19 +77,20 @@ public class AlimentosFormFragment extends BaseFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            param = getArguments().getInt(ARG_CANINO_ALIMENTO);
+            param = getArguments().getInt(ARG_CANINO_SINTOMA);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_alimentos_form, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_sintoma_form, container, false);
 
         canino_id = SharedPreferencesPersonalizados.obtenerCaninoSeleccionado(activity.getBaseContext());
 
         // Configuracion de la BD y auxiliares
-        daoDerecha = database.alimentacionDao();
-        dao = database.caninoAlimentacionDao();
+        daoDerecha = database.sintomaDao();
+        dao = database.caninoSintomaDao();
         listaDerecha = daoDerecha.get();
 
         if (listaDerecha.size() != 0) {
@@ -92,7 +98,7 @@ public class AlimentosFormFragment extends BaseFragment
             nombres = new String[listaDerecha.size()];
             for (int iterador = 0; iterador < listaDerecha.size(); iterador++) {
                 ids[iterador] = listaDerecha.get(iterador).getId();
-                nombres[iterador] = listaDerecha.get(iterador).getProducto();
+                nombres[iterador] = listaDerecha.get(iterador).getNombre();
             }
         } else {
             Toast.makeText(activity.getBaseContext(), "Es necesario contar con listaDerecha activos, comuniquese con el servicio técnico", Toast.LENGTH_LONG).show();
@@ -104,11 +110,11 @@ public class AlimentosFormFragment extends BaseFragment
         ViewHandler.ocultarBottomNavigation(activity);
 
         // Views
-        spinner = view.findViewById(R.id.spinner_alimentos);
-        txtPorcion = view.findViewById(R.id.txtAlimentos_porcion);
-        btnHora = view.findViewById(R.id.btnAlimentos_hora);
-        btnFecha = view.findViewById(R.id.btnAlimentos_fecha);
-        btnAccion = view.findViewById(R.id.btnAlimentos_accion);
+        spinner = view.findViewById(R.id.spinner_sintomas);
+        txtDescripcion = view.findViewById(R.id.txtSintomas_descripcion);
+        btnHora = view.findViewById(R.id.btnSintomas_hora);
+        btnFecha = view.findViewById(R.id.btnSintomas_fecha);
+        btnAccion = view.findViewById(R.id.btnSintomas_accion);
 
         // Comportamientos
         customSpinnerAdapter = new CustomSpinnerAdapter(activity.getBaseContext(), ids, nombres);
@@ -130,7 +136,6 @@ public class AlimentosFormFragment extends BaseFragment
             }
         });
 
-
         btnAccion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -148,23 +153,23 @@ public class AlimentosFormFragment extends BaseFragment
 
                 if (param != -1) {
                     actualizar = dao.getById(param);
-                    actualizar.setPorcion(txtPorcion.getText().toString());
+                    actualizar.setDescripcion(txtDescripcion.getText().toString());
                     actualizar.setFechaHora(new Date(calendario.getTime().getTime()));
-                    actualizar.setAlimentacionId((int) spinner.getSelectedItemId());
+                    actualizar.setSintomaId((int) spinner.getSelectedItemId());
                     long actualizado = dao.update(actualizar);
                     Timber.i("ID Actualizado: " + actualizado);
                 } else {
                     long registro = dao.insert(
-                            new CaninoAlimentacion(canino_id,
+                            new CaninoSintoma(canino_id,
                                     (int) spinner.getSelectedItemId(),
-                                    txtPorcion.getText().toString(),
+                                    txtDescripcion.getText().toString(),
                                     new Date(calendario.getTime().getTime()))
                     );
                     Timber.i("ID Nuevo: " + registro);
                 }
 
-                ((AlimentacionFragment) activity.getSupportFragmentManager()
-                        .findFragmentByTag(Constantes.ALIMENTACION_FRAGMENT))
+                ((SintomaFragment) activity.getSupportFragmentManager()
+                        .findFragmentByTag(Constantes.SINTOMA_FRAGMENT))
                         .actualizarLista(canino_id);
 
                 activity.onBackPressed();
@@ -176,7 +181,7 @@ public class AlimentosFormFragment extends BaseFragment
 
     @Override
     public boolean checarCampos() {
-        return txtPorcion.getText().toString().trim().equals("")
+        return txtDescripcion.getText().toString().trim().equals("")
                 || btnFecha.getText().toString().trim().equals("Fecha:")
                 || btnHora.getText().toString().trim().equals("Hora:");
     }
@@ -184,11 +189,11 @@ public class AlimentosFormFragment extends BaseFragment
     @Override
     public void imprimirResultado() {
         Timber.d("Registro: "
-                + "\nPorcion: " + txtPorcion.getText()
+                + "\nDescripcion: " + txtDescripcion.getText()
                 + "\nFecha: " + btnFecha.getText().toString()
                 + "\nHora: " + btnHora.getText().toString()
                 + "\nCanino: " + canino_id
-                + "\nAlimento: " + spinner.getSelectedItemId());
+                + "\nSintoma: " + spinner.getSelectedItemId());
     }
 
     @Override
@@ -196,12 +201,12 @@ public class AlimentosFormFragment extends BaseFragment
         if (idRegistro == -1) return;
         btnAccion.setText("Actualizar");
         actualizar = dao.getById(param);
-        txtPorcion.setText(actualizar.getPorcion());
+        txtDescripcion.setText(actualizar.getDescripcion());
         btnFecha.setText("Fecha: " + DateOperation.formatDate(actualizar.getFechaHora().getTime()));
         btnHora.setText("Hora: " + DateOperation.formatTime(actualizar.getFechaHora().getTime()));
         int auxCiclo = 0;
         for (int index = 0; index < listaDerecha.size(); index++) {
-            if (listaDerecha.get(index).getId() == actualizar.getAlimentacionId()) {
+            if (listaDerecha.get(index).getId() == actualizar.getSintomaId()) {
                 auxCiclo = index;
                 break;
             }

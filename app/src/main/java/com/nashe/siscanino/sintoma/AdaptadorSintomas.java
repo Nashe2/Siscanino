@@ -1,4 +1,4 @@
-package com.nashe.siscanino.alimentacion;
+package com.nashe.siscanino.sintoma;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,28 +11,28 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.textview.MaterialTextView;
-import com.nashe.siscanino.R;
-import com.nashe.siscanino.data.DatabaseRoom;
-import com.nashe.siscanino.data.dao.AlimentacionDao;
-import com.nashe.siscanino.data.entity.Alimentacion;
-import com.nashe.siscanino.data.entity.CaninoAlimentacion;
+import com.nashe.siscanino.data.dao.SintomaDao;
+import com.nashe.siscanino.data.entity.CaninoSintoma;
+import com.nashe.siscanino.data.entity.Sintoma;
 import com.nashe.siscanino.utils.DateOperation;
 import com.nashe.siscanino.utils.OnItemClickListenerAdapter;
 import com.nashe.siscanino.utils.OnItemLongClickListenerAdapter;
 
+import com.google.android.material.textview.MaterialTextView;
+import com.nashe.siscanino.R;
+import com.nashe.siscanino.data.DatabaseRoom;
+
 import java.util.ArrayList;
 
 @SuppressLint("SetTextI18n")
-@SuppressWarnings({"SpellCheckingInspection", "FieldCanBeLocal"})
-public class AdaptadorAlimentos extends RecyclerView.Adapter<AdaptadorAlimentos.ViewHolder> {
+public class AdaptadorSintomas extends RecyclerView.Adapter<AdaptadorSintomas.ViewHolder> {
 
     private Context context;
-    private ArrayList<CaninoAlimentacion> lista;
+    private ArrayList<CaninoSintoma> lista;
     private OnItemClickListenerAdapter clickListener;
     private OnItemLongClickListenerAdapter longClickListener;
     private int layout;
-    private AlimentacionDao dao;
+    private SintomaDao dao;
 
     protected void setOnItemClickListener(OnItemClickListenerAdapter listener) {
         this.clickListener = listener;
@@ -42,11 +42,11 @@ public class AdaptadorAlimentos extends RecyclerView.Adapter<AdaptadorAlimentos.
         this.longClickListener = listener;
     }
 
-    public AdaptadorAlimentos(Context context, int layout, ArrayList<CaninoAlimentacion> lista) {
+    public AdaptadorSintomas(Context context, int layout, ArrayList<CaninoSintoma> lista) {
         this.context = context;
         this.lista = lista;
         this.layout = layout;
-        dao = DatabaseRoom.getInstance(context).alimentacionDao();
+        dao = DatabaseRoom.getInstance(context).sintomaDao();
     }
 
     @Override
@@ -67,14 +67,14 @@ public class AdaptadorAlimentos extends RecyclerView.Adapter<AdaptadorAlimentos.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        CaninoAlimentacion item = lista.get(position);
-        Alimentacion referencia = dao.getById(item.getAlimentacionId());
+        CaninoSintoma item = lista.get(position);
+        Sintoma referencia = dao.getById(item.getSintomaId());
 
         holder.lblId.setText(item.getId() + "");
-        holder.lblNombre.setText(referencia.getProducto());
+        holder.lblNombre.setText(referencia.getNombre());
         String fechaTiempo = DateOperation.formatDateTime(item.getFechaHora().getTime());
         holder.lblOtroDato.setText(fechaTiempo);
-        holder.imgIcono.setImageResource(R.drawable.ic_food_black);
+        holder.imgIcono.setImageResource(R.drawable.ic_mood_bad_black_24dp);
         holder.imgEditar.setImageResource(R.drawable.ic_edit_24dp);
         holder.imgEliminar.setImageResource(R.drawable.ic_clear_24dp);
     }
@@ -94,7 +94,7 @@ public class AdaptadorAlimentos extends RecyclerView.Adapter<AdaptadorAlimentos.
             card = v.findViewById(R.id.card);
             lblId = v.findViewById(R.id.lbl_id);
             imgIcono = v.findViewById(R.id.img_icono);
-            lblNombre = v.findViewById(R.id.lbl_producto);
+            lblNombre = v.findViewById(R.id.lbl_sintoma);
             lblOtroDato = v.findViewById(R.id.lbl_fechaHora);
             imgEditar = v.findViewById(R.id.img_editar);
             imgEliminar = v.findViewById(R.id.img_eliminar);
@@ -134,7 +134,7 @@ public class AdaptadorAlimentos extends RecyclerView.Adapter<AdaptadorAlimentos.
         notifyItemRangeChanged(posicion, lista.size());
     }
 
-    public void setLista(ArrayList<CaninoAlimentacion> lista) {
+    public void setLista(ArrayList<CaninoSintoma> lista) {
         this.lista = lista;
     }
 }
